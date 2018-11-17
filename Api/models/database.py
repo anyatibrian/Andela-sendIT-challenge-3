@@ -1,25 +1,19 @@
-from urllib.parse import urlparse
 from psycopg2 import extras as RDC
 import psycopg2
+import os
+
+from Api import create_app
+
+config_name = os.getenv("APP_SETTINGS")
 
 
 class DBConnect:
-    def __init__(self, database_url):
-        url_parse = urlparse(database_url)
-        dbname = url_parse.path[1:]
-        username = url_parse.username
-        hostname = url_parse.hostname
-        password = url_parse.password
-        port = url_parse.port
+    def __init__(self):
+        self.app = create_app(config_name)
+        self.db_url = self.app.config['DATABASE_URL']
         try:
-            print('establishing ' + database_url)
-            self.connection = psycopg2.connect(
-                database=dbname,
-                user=username,
-                host=hostname,
-                password=password,
-                port=port
-            )
+            print('establishing connection to' + self.db_url)
+            self.connection = psycopg2.connect(self.db_url)
             print('successfully connected')
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=RDC.RealDictCursor)
@@ -64,3 +58,11 @@ class DBConnect:
             query = "DROP TABLE IF EXISTS {} CASCADE".format(table)
             self.cursor.execute(query)
         return print('tables dropped successfully')
+
+    def execute(self, query):
+        """function that handles the database query execution"""
+        try:
+            self.cursor.execute(query)
+            return 'success'
+        except(Exception, psycopg2.DatabaseError) as e:
+            print(e)
