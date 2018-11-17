@@ -15,7 +15,7 @@ class Users:
         self.conn.cursor.execute(query)
 
     def check_username_exist(self, username, email):
-        """function that checks user exist"""
+        """function that checks user exists"""
         sql = "SELECT * FROM users WHERE username='{}'".format(username) \
               + "and email='{}'".format(email)
         self.conn.cursor.execute(sql)
