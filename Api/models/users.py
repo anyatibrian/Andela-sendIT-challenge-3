@@ -10,6 +10,16 @@ class Users:
     def register_users(self, username, email, password):
         """function that registers users """
         created_at = datetime.utcnow()
-        query = "INSERT INTO users(username, email, password, created_at)" \
+        query = "INSERT INTO users(username, email, password, create_at)" \
                 " VALUES('{}','{}','{}','{}')".format(username, email, password, created_at)
-        self.conn.execute(query)
+        self.conn.cursor.execute(query)
+
+    def check_username_exist(self, username, email):
+        """function that checks user exist"""
+        sql = "SELECT * FROM users WHERE username='{}'".format(username) \
+              + "and email='{}'".format(email)
+        self.conn.cursor.execute(sql)
+        row = self.conn.cursor.fetchone()
+        return row
+
+
