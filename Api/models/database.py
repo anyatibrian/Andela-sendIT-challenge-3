@@ -12,7 +12,7 @@ class DBConnect:
         password = url_parse.password
         port = url_parse.port
         try:
-            print('establishing '+database_url)
+            print('establishing ' + database_url)
             self.connection = psycopg2.connect(
                 database=dbname,
                 user=username,
@@ -28,7 +28,7 @@ class DBConnect:
 
     def create_tables(self):
         """function that tables in the database"""
-        query = (
+        queries = (
             """CREATE TABLE IF NOT EXISTS users(
             user_id serial PRIMARY KEY NOT NULL ,
             username VARCHAR(100) UNIQUE NOT NULL,
@@ -54,4 +54,6 @@ class DBConnect:
             """
         )
         # creating the tables
-        self.cursor.execute(query)
+        for tables in queries:
+            self.cursor.execute(tables)
+        print("tables created successfully")

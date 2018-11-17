@@ -9,4 +9,5 @@ print(config_name)
 
 if __name__ == '__main__':
     db = DBConnect(app.config['DATABASE_URL'])
+    db.create_tables()
     app.run()
