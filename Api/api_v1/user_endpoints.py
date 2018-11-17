@@ -14,8 +14,12 @@ def register_user():
         return jsonify({'message': 'please enter your username, email and password'})
 
     # checks where the user has been created already
-    if users.check_username_exist(username=json_data['username'], email=json_data['email']):
-        return jsonify({'message': 'username and password already taken'})
+    user_exist = users.check_username_exist(email=json_data['email'])
+    if user_exist:
+        return jsonify({'message': user_exist['email'] + ' already taken'})
 
-    users.register_users(username=json_data['username'], password=json_data['password'], email=json_data['email'])
+    # handles user registrations
+    users.register_users(username=json_data['username'].strip(),
+                         password=json_data['password'].strip(),
+                         email=json_data['email'].strip())
     return jsonify({'message': 'your account has been created successfully'})
