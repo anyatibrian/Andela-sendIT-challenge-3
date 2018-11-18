@@ -65,10 +65,9 @@ def test_user_login(client):
     # test to checks for valid login
     response = client.post('api/v1/auth/login', data=json.dumps(test_base.valid_login))
     assert response.status_code == 200
-    assert json.loads(response.data)['message'] == 'successfully logined'
+    assert json.loads(response.data)['access-token'] == json.loads(response.data)['access-token']
 
     # test to check for invalid login
     response = client.post('api/v1/auth/login', data=json.dumps(test_base.invalid_login))
     assert response.status_code == 401
     assert json.loads(response.data)['message'] == 'username and password does not exist'
-
