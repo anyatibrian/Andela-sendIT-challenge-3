@@ -12,7 +12,7 @@ def register_user():
 
     # checks for empty field
     if check_empty_fields(json_data['username'], json_data['email'], json_data['password']):
-        return jsonify({'message': 'please enter your username, email and password'}), 400
+        return jsonify({'message': 'some fields are empty'}), 400
 
     # checks the length of username and password
     if not validate_pwd_and_username(json_data['username'], json_data['password']):
