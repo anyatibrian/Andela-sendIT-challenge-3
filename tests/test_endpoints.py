@@ -27,3 +27,8 @@ def test_user_signup_has_empty_field(client):
     response = client.post('api/v1/auth/signup', data=json.dumps(test_base.empty_users))
     assert response.status_code == 400
     assert json.loads(response.data)['message'] == 'some fields are empty'
+
+
+def test_to_check_for_invalid_users_and_password(client):
+    response = client.post('api/v1/auth/signup', data=json.dumps(test_base.invalide_user))
+    assert response.status_code == 400
