@@ -21,3 +21,10 @@ class ParcelOrders:
                          current_location, delivery_price, created_at, user_id)
         self.conn.cursor.execute(sql)
         return 'order created successfully created'
+
+    def parcel_exist(self, parcel_name):
+        """function that checks the parcel order exists"""
+        sql = "SELECT * FROM parcel_orders WHERE name='{}'".format(parcel_name)
+        self.conn.cursor.execute(sql)
+        parcels = self.conn.cursor.fetchone()
+        return parcels

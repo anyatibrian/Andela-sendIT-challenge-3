@@ -11,6 +11,10 @@ def post_parcels():
     json_data = request.get_json(force=True)
     orders = ParcelOrders()
 
+    # checks order parcel exist
+    if orders.parcel_exist(parcel_name=json_data['parcel_name']):
+        return jsonify({'message': 'parcel order already exist'}), 401
+
     # creates parcels orders
     orders.create_parcel_order(name=json_data['parcel_name'],
                                destination=json_data['destination'],
