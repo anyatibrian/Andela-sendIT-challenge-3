@@ -11,14 +11,14 @@ def register_user():
     users = Users()
 
     # checks for empty field
-    if not check_empty_fields(json_data['username'], json_data['email'], json_data['password']):
+    if check_empty_fields(json_data['username'], json_data['email'], json_data['password']):
         return jsonify({'message': 'please enter your username, email and password'}), 400
 
     # checks the length of username and password
     if not validate_pwd_and_username(json_data['username'], json_data['password']):
-        return jsonify({'message': 'username and password should be atleat six chars'}), 400
+        return jsonify({'message': 'username and password should be atleast six chars'}), 400
 
-    # validates email
+    # validates emails
     if not check_validity_of_mail(json_data['email']):
         return jsonify({'message': 'invalid email'}), 400
     # checks where the user has been created already
@@ -27,7 +27,7 @@ def register_user():
         return jsonify({'message': user_exist['email'] + ' already taken'}), 400
 
     # handles user registrations
-    users.register_users(username=json_data['username'].strip(),
-                         password=json_data['password'].strip(),
-                         email=json_data['email'].strip())
+    users.register_users(username=json_data['username'],
+                         password=json_data['password'],
+                         email=json_data['email'])
     return jsonify({'message': 'your account has been created successfully'})
