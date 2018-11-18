@@ -1,5 +1,6 @@
 from flask import Flask
 from config import app_config
+from flask_jwt_extended import JWTManager
 
 
 def create_app(config_name):
@@ -10,4 +11,7 @@ def create_app(config_name):
     app.register_blueprint(api_v1, url_prefix='/api/v1')
     # accessing our configurations from the config file
     app.config.from_object(app_config[config_name])
+    # configuring JWT
+    app.config['JWT_SECRET_KEY'] == "super-heros-save-the-world"
+    jwt = JWTManager(app)
     return app
