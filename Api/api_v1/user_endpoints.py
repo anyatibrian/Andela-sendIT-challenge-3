@@ -31,3 +31,10 @@ def register_user():
                          password=json_data['password'],
                          email=json_data['email'])
     return jsonify({'message': 'your account has been created successfully'}), 201
+
+
+@api_v1.route('auth/login', methods=['POST'])
+def login_user():
+    json_data = request.get_json(force=True)
+    login = Users()
+    login_user = login.
