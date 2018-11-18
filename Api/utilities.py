@@ -21,7 +21,7 @@ def check_validity_of_mail(email):
 
 
 def string_validator(string_param):
-    special_characters = '$#@%&*!'
+    special_characters = '$#@%&*!?'
 
     special_character = 0
 
@@ -31,3 +31,9 @@ def string_validator(string_param):
 
     if special_character >= 1:
         return True
+
+
+def check_white_space_infield(*fields):
+    for field in fields:
+        if not field.strip():
+            return True
