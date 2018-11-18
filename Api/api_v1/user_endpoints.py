@@ -30,4 +30,4 @@ def register_user():
     users.register_users(username=json_data['username'],
                          password=json_data['password'],
                          email=json_data['email'])
-    return jsonify({'message': 'your account has been created successfully'})
+    return jsonify({'message': 'your account has been created successfully'}), 201

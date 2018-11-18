@@ -40,3 +40,18 @@ def test_to_check_for_invalid_email(client):
     response = client.post('api/v1/auth/signup', data=json.dumps(test_base.invalide_email))
     assert response.status_code == 400
     assert json.loads(response.data)['message'] == 'invalid email'
+
+
+def test_register_user_endpoints(client):
+    """test for registering new users"""
+    response = client.post('api/v1/auth/signup', data=json.dumps(test_base.valid_user))
+    assert response.status_code == 201
+    assert json.loads(response.data)['message'] == 'your account has been created successfully'
+
+
+def test_user_already_exist_(client):
+    """test that checks whether the user has already been created"""
+    response = client.post('api/v1/auth/signup', data=json.dumps(test_base.valid_user))
+    assert response.status_code == 400
+    assert json.loads(response.data)['message'] == 'anyatibrian@gmail.com already taken'
+
