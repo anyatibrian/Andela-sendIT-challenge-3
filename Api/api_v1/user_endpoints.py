@@ -1,5 +1,6 @@
 from ..api_v1 import api_v1
 from flask import jsonify, request
+from flask_jwt_extended import create_access_token
 from ..models.users import Users
 from Api.utilities import check_empty_fields, validate_pwd_and_username, \
     check_validity_of_mail
@@ -47,5 +48,12 @@ def login_user():
     # checks logs the user in
     login_user = login.login_user(json_data['username'], json_data['password'])
     if login_user:
-        return jsonify({'message': 'successfully logined'}), 200
+        # setting the token object
+        token = {
+            "username": login_user['user_id'],
+            "email": login_user['email'],
+            "password": login_user['password']
+        }
+        access_token = create_access_token(identity=token)
+        return jsonify({'access-token': access_token}), 200
     return jsonify({'message': 'username and password does not exist'}), 401

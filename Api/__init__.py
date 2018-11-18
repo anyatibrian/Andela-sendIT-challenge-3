@@ -12,6 +12,6 @@ def create_app(config_name):
     # accessing our configurations from the config file
     app.config.from_object(app_config[config_name])
     # configuring JWT
-    app.config['JWT_SECRET_KEY'] == "super-heros-save-the-world"
+    app.config['JWT_SECRET_KEY'] = 'super-heros-save-the-world'
     jwt = JWTManager(app)
     return app
