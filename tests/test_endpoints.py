@@ -57,7 +57,7 @@ def test_user_already_exist_(client):
 
 
 def test_user_login(client):
-    """test whether user fields are empty during login"""
+    """test user login"""
     response = client.post('api/v1/auth/login', data=json.dumps(test_base.empty_login))
     assert response.status_code == 400
     assert json.loads(response.data)['message'] == 'please enter your username and password'
