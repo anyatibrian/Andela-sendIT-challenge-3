@@ -7,6 +7,7 @@ from Api.utilities import check_empty_fields, validate_pwd_and_username, \
 
 @api_v1.route('auth/signup', methods=['POST'])
 def register_user():
+    """endpoint for registering users"""
     json_data = request.get_json(force=True)
     users = Users()
 
@@ -35,6 +36,16 @@ def register_user():
 
 @api_v1.route('auth/login', methods=['POST'])
 def login_user():
+    """endpoint for loggin in users users"""
     json_data = request.get_json(force=True)
     login = Users()
-    login_user = login.
+
+    # validation for empty fields
+    if check_empty_fields(json_data['username'], json_data['password']):
+        return jsonify({'message': 'please enter your username and password'})
+
+    # checks logs the user in
+    login_user = login.login_user(json_data['username'], json_data['password'])
+    if login_user:
+        return jsonify({'message': 'successfully logined'}), 200
+    return jsonify({'message': 'username and password does not exist'}), 401
