@@ -5,7 +5,12 @@ empty_users = {
 }
 
 invalide_user = {
- "username": "anyati",
+ "username": "anya",
+ "email": "anyatibrian@gmail.com",
+ "password": "password@123"
+}
+invalide_email = {
+ "username": "anyabrian",
  "email": "anyatibrian@gmail",
  "password": "password@123"
 }

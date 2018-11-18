@@ -30,5 +30,13 @@ def test_user_signup_has_empty_field(client):
 
 
 def test_to_check_for_invalid_users_and_password(client):
+    """test that checks for invalid and username length"""
     response = client.post('api/v1/auth/signup', data=json.dumps(test_base.invalide_user))
     assert response.status_code == 400
+    assert json.loads(response.data)['message'] == 'username and password should be atleast six chars'
+
+
+def test_to_check_for_invalid_email(client):
+    response = client.post('api/v1/auth/signup', data=json.dumps(test_base.invalide_email))
+    assert response.status_code == 400
+    assert json.loads(response.data)['message'] == 'invalid email'
