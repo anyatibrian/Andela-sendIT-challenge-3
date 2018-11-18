@@ -22,6 +22,27 @@ def client():
     cxt.pop()
 
 
+# fixtures that registers the users
+@pytest.fixture(scope='module')
+def register_user(client, username='anyatibrian', password='password@123', email='anyatbrian@gmail.com'):
+    data = {
+        'username': username,
+        'password': password,
+        'email': email
+    }
+    return client.post('api/v1/auth/signup', data=json.dumps(data))
+
+
+# fixture that logs in users
+@pytest.fixture(scope='module')
+def login_user(client, username='anyatibrian', password='password@123'):
+    data = {
+        'username': username,
+        'password': password,
+    }
+    return client.post('api/v1/auth/login', data=json.dumps(data))
+
+
 def test_user_signup_has_empty_field(client):
     """test that checks for empty field in user input"""
     response = client.post('api/v1/auth/signup', data=json.dumps(test_base.empty_users))
@@ -71,3 +92,55 @@ def test_user_login(client):
     response = client.post('api/v1/auth/login', data=json.dumps(test_base.invalid_login))
     assert response.status_code == 401
     assert json.loads(response.data)['message'] == 'username and password does not exist'
+
+
+def test_post_invalid_parcel_endpoints(client, register_user, login_user):
+    """test to check for empty parcel order field"""
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.post('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token),
+                           data=json.dumps(test_base.empty_field))
+    assert response.status_code == 400
+    assert b'fields must not be empty' in response.data
+    # checks for empty field
+    response = client.post('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token),
+                           data=json.dumps(test_base.white_space))
+    assert response.status_code == 400
+    assert b'white space chars not allowed' in response.data
+
+
+def test_for_invalid_desc(client, register_user, login_user):
+    """test for invalid parcel orders"""
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.post('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token),
+                           data=json.dumps(test_base.invalid_desc))
+    assert response.status_code == 400
+    assert b'your description field has invalid chars' in response.data
+
+
+def test_post_parcel_order_endpoints(client, register_user, login_user):
+    """test parcel order """
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.post('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token),
+                           data=json.dumps(test_base.parcel_data))
+    assert response.status_code == 201
+    assert b'parcel order created successfully' in response.data
+
+
+def test_parcel_order_already_exist(client, register_user, login_user):
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.post('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token),
+                           data=json.dumps(test_base.parcel_data))
+    assert response.status_code == 400
+    assert b'parcel order already exist' in response.data

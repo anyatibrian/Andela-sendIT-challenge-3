@@ -19,7 +19,7 @@ def post_parcels():
     # checks for white space chars
     if check_white_space_infield(json_data['parcel_name'], json_data['destination'],
                                  json_data['description'], json_data['pickup']):
-        return jsonify({'error': 'white space chars not allowed'})
+        return jsonify({'error': 'white space chars not allowed'}), 400
 
     # checking invalid chars
     if string_validator(json_data['description']):
@@ -27,7 +27,7 @@ def post_parcels():
 
     # checks order parcel exist
     if orders.parcel_exist(parcel_name=json_data['parcel_name']):
-        return jsonify({'message': 'parcel order already exist'}), 401
+        return jsonify({'message': 'parcel order already exist'}), 400
 
     # creates parcels orders
     orders.create_parcel_order(name=json_data['parcel_name'].strip(),
