@@ -21,4 +21,9 @@ class Users:
         row = self.conn.cursor.fetchone()
         return row
 
-
+    def login_user(self, username, password):
+        """login user"""
+        sql = "SELECT * FROM users WHERE username='{}'".format(username) + "and password='{}'".format(password)
+        self.conn.cursor.execute(sql)
+        users = self.conn.cursor.fetchone()
+        return users

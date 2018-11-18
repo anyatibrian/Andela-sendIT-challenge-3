@@ -55,3 +55,20 @@ def test_user_already_exist_(client):
     assert response.status_code == 400
     assert json.loads(response.data)['message'] == 'anyatibrian@gmail.com already taken'
 
+
+def test_user_login(client):
+    """test user login"""
+    response = client.post('api/v1/auth/login', data=json.dumps(test_base.empty_login))
+    assert response.status_code == 400
+    assert json.loads(response.data)['message'] == 'please enter your username and password'
+
+    # test to checks for valid login
+    response = client.post('api/v1/auth/login', data=json.dumps(test_base.valid_login))
+    assert response.status_code == 200
+    assert json.loads(response.data)['message'] == 'successfully logined'
+
+    # test to check for invalid login
+    response = client.post('api/v1/auth/login', data=json.dumps(test_base.invalid_login))
+    assert response.status_code == 401
+    assert json.loads(response.data)['message'] == 'username and password does not exist'
+
