@@ -29,7 +29,7 @@ class DBConnect:
             email VARCHAR(100)NOT NULL,
             password VARCHAR(100) NOT NULL,
             create_at VARCHAR(100) NOT NULL,
-            admin BOOLEAN DEFAULT TRUE 
+            admin BOOLEAN DEFAULT FALSE 
             )""",
             """
             CREATE TABLE IF NOT EXISTS parcel_orders(

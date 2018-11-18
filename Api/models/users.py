@@ -27,3 +27,10 @@ class Users:
         self.conn.cursor.execute(sql)
         users = self.conn.cursor.fetchone()
         return users
+
+    def find_user(self, user_id):
+        """checks whether the user is admin or not"""
+        sql = "SELECT * FROM users WHERE user_id='{}'".format(user_id)
+        self.conn.cursor.execute(sql)
+        role = self.conn.cursor.fetchone()
+        return role
