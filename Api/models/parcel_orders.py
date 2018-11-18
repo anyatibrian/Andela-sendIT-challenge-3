@@ -8,7 +8,7 @@ class ParcelOrders:
     def __init__(self):
         self.conn = DBConnect()
 
-    def create_parcel_order(self, name, destination, descripition, pickup, user_id):
+    def create_parcel_order(self, name, destination, description, pickup, user_id):
         """function that create products"""
         created_at = datetime.utcnow()
         status = 'pending'
@@ -17,5 +17,7 @@ class ParcelOrders:
         sql = "INSERT INTO parcel_orders(name, destination, description," \
               " pickup, status, current_location, delivery_price, created_at" \
               ", user_id) VALUES('{}','{}', '{}','{}','{}','{}','{}','{}','{}'" \
-              ")".format(name, destination, descripition, pickup, status,
+              ")".format(name, destination, description, pickup, status,
                          current_location, delivery_price, created_at, user_id)
+        self.conn.cursor.execute(sql)
+        return 'order created successfully created'
