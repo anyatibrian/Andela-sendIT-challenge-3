@@ -42,7 +42,7 @@ def login_user():
 
     # validation for empty fields
     if check_empty_fields(json_data['username'], json_data['password']):
-        return jsonify({'message': 'please enter your username and password'})
+        return jsonify({'message': 'please enter your username and password'}), 400
 
     # checks logs the user in
     login_user = login.login_user(json_data['username'], json_data['password'])
