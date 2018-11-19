@@ -28,3 +28,10 @@ class ParcelOrders:
         self.conn.cursor.execute(sql)
         parcels = self.conn.cursor.fetchone()
         return parcels
+
+    def get_users_parcel_orders(self, user_id):
+        """function that fetches all parcel orders by a specific user"""
+        sql = "SELECT * FROM parcel_orders WHERE user_id='{}'".format(user_id)
+        self.conn.cursor.execute(sql)
+        parcels = self.conn.cursor.fetchall()
+        return parcels

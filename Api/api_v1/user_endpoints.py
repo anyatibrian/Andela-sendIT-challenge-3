@@ -1,4 +1,5 @@
 from ..api_v1 import api_v1
+from datetime import timedelta
 from flask import jsonify, request
 from flask_jwt_extended import create_access_token
 from ..models.users import Users
@@ -54,6 +55,6 @@ def login_user():
             "email": login_user['email'],
             "password": login_user['password']
         }
-        access_token = create_access_token(identity=token)
+        access_token = create_access_token(identity=token, expires_delta=timedelta(hours=3))
         return jsonify({'access-token': access_token}), 200
     return jsonify({'message': 'username and password does not exist'}), 401
