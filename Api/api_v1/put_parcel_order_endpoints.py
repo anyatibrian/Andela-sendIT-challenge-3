@@ -4,17 +4,16 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from Api.models.parcel_orders import ParcelOrders
 
 
-@api_v1.route('/parcels/<int:parcelId>', methods=['PUT'])
+@api_v1.route('/parcels/<int:parcel_id>', methods=['PUT'])
 @jwt_required
 def edit_parcel_destination(parcel_id):
     current_user = get_jwt_identity()
     json_data = request.get_json(force=True)
-    try:
-        destination = json_data['destination']
+
+    destination = json_data['destination']
+    if isinstance(destination, str):
         parcels = ParcelOrders().update_parcel_destination(user_id=current_user['user_id'],
                                                            destination=destination,
                                                            parcel_id=parcel_id)
         return jsonify({'message': 'parcel destination updated successfully'}), 201
-    except Exception as error:
-        print(error)
-    return jsonify({'error': 'check your columns'}), 400
+    return jsonify({'error': 'destination should be strings only'}), 404
