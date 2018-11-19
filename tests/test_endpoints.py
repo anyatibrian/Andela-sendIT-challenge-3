@@ -123,6 +123,17 @@ def test_for_invalid_desc(client, register_user, login_user):
     assert b'your description field has invalid chars' in response.data
 
 
+def test_test_empty_parcel_endpoints(client, register_user, login_user):
+    """test empty parcel list """
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.get('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token))
+    assert response.status_code == 404
+    assert b'your order is empty' in response.data
+
+
 def test_post_parcel_order_endpoints(client, register_user, login_user):
     """test parcel order """
     register_user
@@ -147,10 +158,11 @@ def test_parcel_order_already_exist(client, register_user, login_user):
 
 
 def test_get_all_parcel_orders(client, register_user, login_user):
-    """test """
+    """test get all parcel endpoints """
     register_user
     result = login_user
 
     access_token = json.loads(result.data.decode())['access-token']
     response = client.get('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token))
     assert response.status_code == 200
+    assert json.loads(response.data)['parcel_orders'][0]['destination'] == 'lira'
