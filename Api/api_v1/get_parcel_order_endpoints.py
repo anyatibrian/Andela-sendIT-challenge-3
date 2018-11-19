@@ -1,5 +1,5 @@
 from Api.api_v1 import api_v1
-from flask import jsonify, request
+from flask import jsonify
 from Api.models.parcel_orders import ParcelOrders
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
