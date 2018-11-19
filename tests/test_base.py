@@ -32,3 +32,21 @@ invalid_login = {
     "username": "anyabrian@140",
     "password": "password@123"
 }
+
+empty_field = {"parcel_name": "anyatibrian",
+               "destination": "lira",
+               "description": "",
+               "pickup": "kampala"}
+white_space = {"parcel_name": "anyatibrian",
+               "destination": " ",
+               "description": " ",
+               "pickup": "kampala"}
+invalid_desc = {"parcel_name": "anyatibrian",
+                "destination": "lira",
+                "description": "@blue in color",
+                "pickup": "kampala"}
+parcel_data = {"parcel_name": "cooker",
+               "destination": "lira",
+               "description": " color is blue",
+               "pickup": "kampala"
+               }

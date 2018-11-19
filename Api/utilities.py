@@ -1,8 +1,4 @@
 import re
-from flask import jsonify
-from functools import wraps
-from flask_jwt_extended import get_jwt_identity, verify_fresh_jwt_in_request
-from Api.models.users import Users
 
 
 def check_empty_fields(*args):
@@ -25,7 +21,7 @@ def check_validity_of_mail(email):
 
 
 def string_validator(string_param):
-    special_characters = '$#@%&*!'
+    special_characters = '$#@%&*!?'
 
     special_character = 0
 
@@ -37,15 +33,7 @@ def string_validator(string_param):
         return True
 
 
-def admin_required(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        verify_fresh_jwt_in_request()
-        current_user = get_jwt_identity()
-        user = Users().find_user(current_user['user_id'])
-        admin = user['admin']
-        if not admin:
-            return jsonify({'message': 'You cant perform this action because you are unauthorised'}), 401
-        return f(*args, **kwargs)
-
-    return wrapper
+def check_white_space_infield(*fields):
+    for field in fields:
+        if not field.strip():
+            return True

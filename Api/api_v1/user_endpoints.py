@@ -50,7 +50,7 @@ def login_user():
     if login_user:
         # setting the token object
         token = {
-            "username": login_user['user_id'],
+            "user_id": login_user['user_id'],
             "email": login_user['email'],
             "password": login_user['password']
         }
