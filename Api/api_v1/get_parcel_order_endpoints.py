@@ -12,5 +12,11 @@ def get_parcel_orders():
     orders = ParcelOrders()
     parcels = orders.get_users_parcel_orders(current_user['user_id'])
     if parcels:
-        return jsonify({'parcel_orders': parcels})
-    return jsonify({'parcel_orders': 'your order is empty'})
+        return jsonify({'parcel_orders': parcels}), 200
+    return jsonify({'parcel_orders': 'your order is empty'}), 404
+
+
+@api_v1.route('/parcels', methods=['GET'])
+@jwt_required
+def get_single_parcel_order():
+    pass

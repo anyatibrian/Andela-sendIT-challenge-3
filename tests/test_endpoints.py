@@ -144,3 +144,13 @@ def test_parcel_order_already_exist(client, register_user, login_user):
                            data=json.dumps(test_base.parcel_data))
     assert response.status_code == 400
     assert b'parcel order already exist' in response.data
+
+
+def test_get_all_parcel_orders(client, register_user, login_user):
+    """test """
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.get('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token))
+    assert response.status_code == 200
