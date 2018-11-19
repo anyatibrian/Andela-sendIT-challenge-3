@@ -44,7 +44,7 @@ class ParcelOrders:
         return parcel_order
 
     def update_parcel_destination(self, user_id, destination, parcel_id):
-        """function that updates parcel destinations"""
+        """function that updates parcel destination"""
         sql = "UPDATE parcel_orders SET destination='{}'".format(destination) + " WHERE parcel_id='{}'" \
             .format(parcel_id) + " and user_id='{}'" + format(user_id)
         self.conn.cursor.execute(sql)
