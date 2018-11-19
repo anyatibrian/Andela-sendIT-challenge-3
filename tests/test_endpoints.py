@@ -166,3 +166,16 @@ def test_get_all_parcel_orders(client, register_user, login_user):
     response = client.get('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token))
     assert response.status_code == 200
     assert json.loads(response.data)['parcel_orders'][0]['destination'] == 'lira'
+
+
+def test_get_single_order_endpoint(client, login_user, register_user):
+    """test user get single order endpoint"""
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.get('api/v1/parcels/1', headers=dict(Authorization="Bearer " + access_token))
+    assert response.status_code == 200
+    response = client.get('api/v1/parcels/1000', headers=dict(Authorization="Bearer " + access_token))
+    assert response.status_code == 404
+    assert b'parcel order not found' in response.data
