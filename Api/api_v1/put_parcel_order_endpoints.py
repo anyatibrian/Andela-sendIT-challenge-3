@@ -16,4 +16,4 @@ def edit_parcel_destination(parcel_id):
                                                            destination=destination,
                                                            parcel_id=parcel_id)
         return jsonify({'message': 'parcel destination updated successfully'}), 201
-    return jsonify({'error': 'destination should be strings only'}), 404
+    return jsonify({'error': 'destination should be strings only'}), 400

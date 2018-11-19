@@ -8,7 +8,7 @@ from tests import test_base
 # creating our test client
 @pytest.fixture(scope='module')
 def client():
-    app = create_app(config_name='testing')
+    app = create_app('testing')
     test_client = app.test_client()
 
     # creating the database object
@@ -179,3 +179,17 @@ def test_get_single_order_endpoint(client, login_user, register_user):
     response = client.get('api/v1/parcels/1000', headers=dict(Authorization="Bearer " + access_token))
     assert response.status_code == 404
     assert b'parcel order not found' in response.data
+
+
+def test_update_parcel_destination(client, register_user, login_user):
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.put('api/v1/parcels/1', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'destination': 'Kampala'}))
+    assert response.status_code == 201
+    response = client.put('api/v1/parcels/1', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'destination': 10000}))
+    assert response.status_code == 400
+    assert b'destination should be strings only' in response.data
