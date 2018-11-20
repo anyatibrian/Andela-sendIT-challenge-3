@@ -4,9 +4,9 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from Api.models.parcel_orders import ParcelOrders
 
 
-@api_v1.route('/parcels/<int:parcel_id>', methods=['PUT'])
+@api_v1.route('/parcels/<int:parcel_id>/destination', methods=['PUT'])
 @jwt_required
-def edit_parcel_destination(parcel_id):
+def update_parcel_destination(parcel_id):
     current_user = get_jwt_identity()
     json_data = request.get_json(force=True)
 
@@ -17,3 +17,7 @@ def edit_parcel_destination(parcel_id):
                                                            parcel_id=parcel_id)
         return jsonify({'message': 'parcel destination updated successfully'}), 201
     return jsonify({'error': 'destination should be strings only'}), 400
+
+@api_v1.route('/parcels/<int:parcelId>/status', methods=['PUT'])
+def update_parcel_status(parcelId):
+
