@@ -59,3 +59,9 @@ class ParcelOrders:
         """function that enables the admin to update delivery status"""
         sql = "UPDATE parcel_orders SET status='{}'".format(status) + " WHERE parcel_id='{}'".format(parcel_id)
         self.conn.cursor.execute(sql)
+
+    def admin_update_parcel_delivery_present_location(self, present_location, parcel_id):
+        """function that enables the admin to update delivery status"""
+        sql = "UPDATE parcel_orders SET current_location='{}'".format(present_location) + " WHERE parcel_id='{}'"\
+            .format(parcel_id)
+        self.conn.cursor.execute(sql)
