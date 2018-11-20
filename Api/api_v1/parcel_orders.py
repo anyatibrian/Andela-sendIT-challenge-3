@@ -79,4 +79,8 @@ def update_parcel_destination(parcel_id):
 @api_v1.route('/parcels/<int:parcelId>/status', methods=['PUT'])
 @jwt_required
 def update_parcel_status(parcelId):
-    pass
+    current_user = get_jwt_identity()
+    json_data = request.get_json(force=True)
+
+    update_status = ParcelOrders().update_parcel_delivery_status(current_user['user_id'], json_data['status'], parcelId)
+    return jsonify({'message': 'status has been successfully updated'})
