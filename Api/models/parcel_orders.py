@@ -48,3 +48,10 @@ class ParcelOrders:
         sql = "UPDATE parcel_orders SET destination='{}'".format(destination) + " WHERE parcel_id='{}'" \
             .format(parcel_id) + " and user_id='{}'".format(user_id)
         self.conn.cursor.execute(sql)
+
+    def update_parcel_delivery_status(self, user_id, status, parcel_id):
+        """function that update parcel delivery status"""
+        sql = "UPDATE parcel_orders SET status='{}'".format(status) + " WHERE parcel_id='{}'" \
+            .format(parcel_id) + " and user_id='{}'".format(user_id)
+        self.conn.cursor.execute(sql)
+

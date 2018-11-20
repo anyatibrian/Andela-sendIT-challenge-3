@@ -18,6 +18,8 @@ def update_parcel_destination(parcel_id):
         return jsonify({'message': 'parcel destination updated successfully'}), 201
     return jsonify({'error': 'destination should be strings only'}), 400
 
-@api_v1.route('/parcels/<int:parcelId>/status', methods=['PUT'])
-def update_parcel_status(parcelId):
 
+@api_v1.route('/parcels/<int:parcelId>/status', methods=['PUT'])
+@jwt_required
+def update_parcel_status(parcelId):
+    pass
