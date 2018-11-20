@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..api_v1 import api_v1
 from Api.models.parcel_orders import ParcelOrders
 from Api.helpers.utilities import check_empty_fields, string_validator, \
-    check_white_space_infield, validate_order_delivery_status
+    check_white_space_infield, validate_order_delivery_status,validate_order_delivery_status_by_admin
 from Api.helpers.admin_required import admin_required
 
 
@@ -95,4 +95,7 @@ def update_parcel_status(parcelId):
 @jwt_required
 def update_parcel_order_status(parcelId):
     json_data = request.get_json(force=True)
-    return jsonify({'message': 'status update successfully'})
+    if validate_order_delivery_status_by_admin(json_data['status']):
+        return jsonify({'message': 'parcel status should be Transit and Delivered'}), 400
+    ParcelOrders().admin_update_parcel_delivery_status(json_data['status'], parcelId)
+    return jsonify({'message': 'status update successfully'}), 201
