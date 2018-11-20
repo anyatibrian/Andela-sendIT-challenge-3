@@ -37,3 +37,8 @@ def check_white_space_infield(*fields):
     for field in fields:
         if not field.strip():
             return True
+
+
+def validate_order_delivery_status(status):
+    if status != 'canceled' and status != 'pending':
+        return True

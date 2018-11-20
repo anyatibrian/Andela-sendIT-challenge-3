@@ -2,7 +2,8 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..api_v1 import api_v1
 from Api.models.parcel_orders import ParcelOrders
-from Api.helpers.utilities import check_empty_fields, string_validator, check_white_space_infield
+from Api.helpers.utilities import check_empty_fields, string_validator,\
+    check_white_space_infield, validate_order_delivery_status
 
 
 @api_v1.route('/parcels', methods=['POST'])
@@ -82,5 +83,8 @@ def update_parcel_status(parcelId):
     current_user = get_jwt_identity()
     json_data = request.get_json(force=True)
 
-    update_status = ParcelOrders().update_parcel_delivery_status(current_user['user_id'], json_data['status'], parcelId)
-    return jsonify({'message': 'status has been successfully updated'})
+    # validates status
+    if validate_order_delivery_status(json_data['status']):
+        return jsonify({'error': 'in valid status'}), 400
+    ParcelOrders().update_parcel_delivery_status(current_user['user_id'], json_data['status'], parcelId)
+    return jsonify({'message': 'status has been successfully updated'}), 201
