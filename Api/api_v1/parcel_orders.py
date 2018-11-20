@@ -102,7 +102,7 @@ def update_parcel_order_status(parcelId):
 
 
 @api_v1.route('/parcels/<int:parcelId>/presentLocation', methods=['PUT'])
-@jwt_required
+@admin_required
 def update_parcel_order_current_location(parcelId):
     json_data = request.get_json(force=True)
     if not json_data['current_location'].isalpha():
