@@ -53,7 +53,7 @@ def login_user():
         token = {
             "user_id": login_user['user_id'],
             "email": login_user['email'],
-            "password": login_user['password']
+            "admin": login_user['admin']
         }
         access_token = create_access_token(identity=token, expires_delta=timedelta(hours=3))
         return jsonify({'access-token': access_token}), 200

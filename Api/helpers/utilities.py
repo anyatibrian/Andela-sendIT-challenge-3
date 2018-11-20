@@ -1,5 +1,7 @@
 import re
-
+from functools import wraps
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
+from Api.models.users import Users
 
 def check_empty_fields(*args):
     """checks for an empty field"""
@@ -41,4 +43,9 @@ def check_white_space_infield(*fields):
 
 def validate_order_delivery_status(status):
     if status != 'canceled' and status != 'pending':
+        return True
+
+
+def validate_order_delivery_status_by_admin(status):
+    if status != 'Transit' and status != 'Delivered':
         return True
