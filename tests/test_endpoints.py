@@ -196,6 +196,7 @@ def test_update_parcel_destination(client, register_user, login_user):
 
 
 def test_update_order_status_endpoint(client, register_user, login_user):
+    """the function that test user update order status endpoints"""
     register_user
     result = login_user
 
@@ -211,6 +212,7 @@ def test_update_order_status_endpoint(client, register_user, login_user):
 
 
 def test_admin_update_order_status_endpoint(client, register_user, login_user):
+    """function that test admin update order status endpoints"""
     register_user
     result = login_user
 
