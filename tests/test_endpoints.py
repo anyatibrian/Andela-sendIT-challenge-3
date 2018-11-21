@@ -1,4 +1,3 @@
-import os
 import json
 import pytest
 from Api import create_app
