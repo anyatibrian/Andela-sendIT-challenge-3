@@ -43,6 +43,17 @@ def login_user(client, username='anyatibrian', password='password@123'):
     return client.post('api/v1/auth/login', data=json.dumps(data))
 
 
+@pytest.fixture(scope='module')
+def register_admin(client, username='anyatibrian', password='password@123', email='anyatbrian@gmail.com', admin=True):
+    data = {
+        'username': username,
+        'password': password,
+        'email': email,
+        'admin': admin
+    }
+    return client.post('api/v1/auth/signup', data=json.dumps(data))
+
+
 def test_user_signup_has_empty_field(client):
     """test that checks for empty field in user input"""
     response = client.post('api/v1/auth/signup', data=json.dumps(test_base.empty_users))
@@ -209,3 +220,12 @@ def test_update_order_status_endpoint(client, register_user, login_user):
     response = client.put('api/v1/parcels/1', headers=dict(Authorization="Bearer " + access_token),
                           data=json.dumps({'status': 'cance'}))
     assert response.status_code == 400
+
+
+def test_not_admin(client, login_user, register_user):
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.get('api/v1/admin/parcels', headers=dict(Authorization="Bearer " + access_token))
+    assert b'You cant perform this action because you are unauthorised' in response.data
