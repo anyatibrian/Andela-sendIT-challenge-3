@@ -2,18 +2,21 @@ from psycopg2 import extras as RDC
 import psycopg2
 import os
 
-from Api import create_app
-
-config_name = os.getenv("APP_SETTINGS")
-
 
 class DBConnect:
+    """class that establishes database connection, creates various tables and drops the tables """
     def __init__(self):
-        self.app = create_app(config_name)
-        self.db_url = self.app.config['DATABASE_URL']
+        if os.getenv('APP_SETTINGS') == "testing":
+            self.database_name = "test_sendIT"
+        else:
+            self.database_name = "sendIT"
         try:
-            print('establishing connection to' + self.db_url)
-            self.connection = psycopg2.connect(self.db_url)
+            print('establishing connection to ' + self.database_name)
+            self.connection = psycopg2.connect(database="{}".format(self.database_name),
+                                               user="postgres",
+                                               host="localhost",
+                                               password="password",
+                                               port="5432")
             print('successfully connected')
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=RDC.RealDictCursor)
@@ -21,7 +24,7 @@ class DBConnect:
             print(error)
 
     def create_tables(self):
-        """function that tables in the database"""
+        """function  that creates tables in the database"""
         queries = (
             """CREATE TABLE IF NOT EXISTS users(
             user_id serial PRIMARY KEY NOT NULL ,
@@ -41,6 +44,7 @@ class DBConnect:
             status VARCHAR(100) DEFAULT'pending',
             current_location VARCHAR(100) NOT NULL,
             delivery_price VARCHAR(100)NOT NULL,
+            weight INT NOT NULL,
             created_at VARCHAR(100) NOT NULL,
             user_id INT NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 

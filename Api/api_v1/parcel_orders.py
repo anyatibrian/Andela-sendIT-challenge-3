@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..api_v1 import api_v1
 from Api.models.parcel_orders import ParcelOrders
 from Api.helpers.utilities import check_empty_fields, string_validator, \
-    check_white_space_infield, validate_order_delivery_status,validate_order_delivery_status_by_admin
+    check_white_space_infield, validate_order_delivery_status, validate_order_delivery_status_by_admin
 from Api.helpers.admin_required import admin_required
 
 
@@ -22,13 +22,12 @@ def post_parcels():
     if check_white_space_infield(json_data['parcel_name'], json_data['destination'],
                                  json_data['description'], json_data['pickup']):
         return jsonify({'error': 'white space chars not allowed'}), 400
-
     # check ing invalid chars
     if string_validator(json_data['description']):
         return jsonify({'errors': 'your description field has invalid chars'}), 400
 
     # checks order parcel exist
-    if orders.parcel_exist(parcel_name=json_data['parcel_name']):
+    if orders.check_parcel_exist(parcel_name=json_data['parcel_name']):
         return jsonify({'error': 'parcel order already exist'}), 400
 
     # creates parcels orders
@@ -36,6 +35,7 @@ def post_parcels():
                                destination=json_data['destination'].strip(),
                                description=json_data['description'].strip(),
                                pickup=json_data['pickup'].strip(),
+                               weight=json_data['weight'],
                                user_id=current_user['user_id'])
     return jsonify({'message': "parcel order created successfully"}), 201
 
@@ -109,3 +109,13 @@ def update_parcel_order_current_location(parcelId):
         return jsonify({'error': 'field must be a string'}), 400
     ParcelOrders().admin_update_parcel_delivery_present_location(json_data['current_location'], parcelId)
     return jsonify({'message': 'present location successfully updated'})
+
+
+@api_v1.route('/admin/parcels', methods=['GET'])
+@jwt_required
+@admin_required
+def get_all_users_parcel_orders():
+    parcelOrders = ParcelOrders().admin_get_all_parcels_delivery_order()
+    if parcelOrders:
+        return jsonify({'parcel_orders': parcelOrders})
+    return jsonify({'error': 'parcel orders not found'}), 400

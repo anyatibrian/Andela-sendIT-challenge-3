@@ -8,21 +8,21 @@ class ParcelOrders:
     def __init__(self):
         self.conn = DBConnect()
 
-    def create_parcel_order(self, name, destination, description, pickup, user_id):
-        """function that create products"""
+    def create_parcel_order(self, name, destination, description, pickup, weight, user_id):
+        """function that creates products"""
         created_at = datetime.utcnow()
         status = 'pending'
         current_location = pickup
-        delivery_price = "000"
+        delivery_price = str(2000 * weight)+"ugx"
         sql = "INSERT INTO parcel_orders(name, destination, description," \
-              " pickup, status, current_location, delivery_price, created_at" \
-              ", user_id) VALUES('{}','{}', '{}','{}','{}','{}','{}','{}','{}'" \
+              " pickup, status, current_location, delivery_price, weight, created_at" \
+              ", user_id) VALUES('{}','{}', '{}','{}','{}','{}','{}','{}','{}','{}'" \
               ")".format(name, destination, description, pickup, status,
-                         current_location, delivery_price, created_at, user_id)
+                         current_location, delivery_price, weight, created_at, user_id)
         self.conn.cursor.execute(sql)
         return 'order created successfully created'
 
-    def parcel_exist(self, parcel_name):
+    def check_parcel_exist(self, parcel_name):
         """function that checks the parcel order exists"""
         sql = "SELECT * FROM parcel_orders WHERE name='{}'".format(parcel_name)
         self.conn.cursor.execute(sql)
@@ -62,6 +62,13 @@ class ParcelOrders:
 
     def admin_update_parcel_delivery_present_location(self, present_location, parcel_id):
         """function that enables the admin to update delivery status"""
-        sql = "UPDATE parcel_orders SET current_location='{}'".format(present_location) + " WHERE parcel_id='{}'"\
+        sql = "UPDATE parcel_orders SET current_location='{}'".format(present_location) + " WHERE parcel_id='{}'" \
             .format(parcel_id)
         self.conn.cursor.execute(sql)
+
+    def admin_get_all_parcels_delivery_order(self):
+        """function that queries all the parcel orders """
+        sql = "SELECT * FROM parcel_orders"
+        self.conn.cursor.execute(sql)
+        parcel_orders = self.conn.cursor.fetchall()
+        return parcel_orders
