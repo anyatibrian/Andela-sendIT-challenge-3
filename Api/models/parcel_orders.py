@@ -12,7 +12,7 @@ class ParcelOrders:
         """function that create products"""
         created_at = datetime.utcnow()
         status = 'pending'
-        current_location = 'None'
+        current_location = pickup
         delivery_price = "000"
         sql = "INSERT INTO parcel_orders(name, destination, description," \
               " pickup, status, current_location, delivery_price, created_at" \
