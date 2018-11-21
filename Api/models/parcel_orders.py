@@ -12,7 +12,7 @@ class ParcelOrders:
         """function that create products"""
         created_at = datetime.utcnow()
         status = 'pending'
-        current_location = 'None'
+        current_location = pickup
         delivery_price = "000"
         sql = "INSERT INTO parcel_orders(name, destination, description," \
               " pickup, status, current_location, delivery_price, created_at" \
@@ -58,4 +58,10 @@ class ParcelOrders:
     def admin_update_parcel_delivery_status(self, status, parcel_id):
         """function that enables the admin to update delivery status"""
         sql = "UPDATE parcel_orders SET status='{}'".format(status) + " WHERE parcel_id='{}'".format(parcel_id)
+        self.conn.cursor.execute(sql)
+
+    def admin_update_parcel_delivery_present_location(self, present_location, parcel_id):
+        """function that enables the admin to update delivery status"""
+        sql = "UPDATE parcel_orders SET current_location='{}'".format(present_location) + " WHERE parcel_id='{}'"\
+            .format(parcel_id)
         self.conn.cursor.execute(sql)

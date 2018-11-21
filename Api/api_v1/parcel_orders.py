@@ -29,7 +29,7 @@ def post_parcels():
 
     # checks order parcel exist
     if orders.parcel_exist(parcel_name=json_data['parcel_name']):
-        return jsonify({'message': 'parcel order already exist'}), 400
+        return jsonify({'error': 'parcel order already exist'}), 400
 
     # creates parcels orders
     orders.create_parcel_order(name=json_data['parcel_name'].strip(),
@@ -49,7 +49,7 @@ def get_parcel_orders():
     parcels = orders.get_users_parcel_orders(current_user['user_id'])
     if parcels:
         return jsonify({'parcel_orders': parcels}), 200
-    return jsonify({'parcel_orders': 'your order is empty'}), 404
+    return jsonify({'error': 'your order is empty'}), 404
 
 
 @api_v1.route('/parcels/<int:parcel_id>', methods=['GET'])
@@ -86,7 +86,7 @@ def update_parcel_status(parcelId):
 
     # validates status
     if validate_order_delivery_status(json_data['status']):
-        return jsonify({'error': 'in valid status'}), 400
+        return jsonify({'error': 'your status should be only canceled and pending'}), 400
     ParcelOrders().update_parcel_delivery_status(current_user['user_id'], json_data['status'], parcelId)
     return jsonify({'message': 'status has been successfully updated'}), 201
 
@@ -96,6 +96,16 @@ def update_parcel_status(parcelId):
 def update_parcel_order_status(parcelId):
     json_data = request.get_json(force=True)
     if validate_order_delivery_status_by_admin(json_data['status']):
-        return jsonify({'message': 'parcel status should be Transit and Delivered'}), 400
+        return jsonify({'error': 'parcel status should be Transit and Delivered'}), 400
     ParcelOrders().admin_update_parcel_delivery_status(json_data['status'], parcelId)
     return jsonify({'message': 'status has been successfully updated'}), 201
+
+
+@api_v1.route('/parcels/<int:parcelId>/presentLocation', methods=['PUT'])
+@admin_required
+def update_parcel_order_current_location(parcelId):
+    json_data = request.get_json(force=True)
+    if not json_data['current_location'].isalpha():
+        return jsonify({'error': 'field must be a string'}), 400
+    ParcelOrders().admin_update_parcel_delivery_present_location(json_data['current_location'], parcelId)
+    return jsonify({'message': 'present location successfully updated'})
