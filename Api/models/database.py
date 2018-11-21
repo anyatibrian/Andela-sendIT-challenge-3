@@ -7,7 +7,7 @@ class DBConnect:
     """class that establishes database connection, creates various tables and drops the tables """
     def __init__(self):
         if os.getenv('APP_SETTINGS') == "testing":
-            self.database_name = "test_sendIT"
+            self.database_name = "test_db"
         else:
             self.database_name = "sendIT"
         try:
