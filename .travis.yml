@@ -9,7 +9,7 @@ services:
   - postgresql
 env:
   global:
-    - APP_SETTINGS=testing
+    - export APP_SETTINGS=testing
 before_script:
   - psql -c 'create database test_sendIT;' -U postgres
 
