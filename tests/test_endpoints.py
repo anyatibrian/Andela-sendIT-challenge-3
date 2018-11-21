@@ -8,7 +8,7 @@ from tests import test_base
 # creating our test client
 @pytest.fixture(scope='module')
 def client():
-    app = create_app('testing')
+    app = create_app()
     test_client = app.test_client()
 
     # creating the database object
