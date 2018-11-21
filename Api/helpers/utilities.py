@@ -1,7 +1,5 @@
 import re
-from functools import wraps
-from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
-from Api.models.users import Users
+
 
 def check_empty_fields(*args):
     """checks for an empty field"""

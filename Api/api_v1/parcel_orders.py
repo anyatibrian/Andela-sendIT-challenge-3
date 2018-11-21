@@ -36,6 +36,7 @@ def post_parcels():
                                destination=json_data['destination'].strip(),
                                description=json_data['description'].strip(),
                                pickup=json_data['pickup'].strip(),
+                               weight=json_data['weight'],
                                user_id=current_user['user_id'])
     return jsonify({'message': "parcel order created successfully"}), 201
 

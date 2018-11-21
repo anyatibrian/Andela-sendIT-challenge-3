@@ -42,6 +42,7 @@ class DBConnect:
             status VARCHAR(100) DEFAULT'pending',
             current_location VARCHAR(100) NOT NULL,
             delivery_price VARCHAR(100)NOT NULL,
+            weight INT NOT NULL,
             created_at VARCHAR(100) NOT NULL,
             user_id INT NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 

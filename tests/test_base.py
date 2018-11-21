@@ -36,17 +36,22 @@ invalid_login = {
 empty_field = {"parcel_name": "anyatibrian",
                "destination": "lira",
                "description": "",
-               "pickup": "kampala"}
+               "pickup": "kampala",
+               "weight": 3}
 white_space = {"parcel_name": "anyatibrian",
                "destination": " ",
                "description": " ",
-               "pickup": "kampala"}
+               "pickup": "kampala",
+               "weight": 3
+               }
 invalid_desc = {"parcel_name": "anyatibrian",
                 "destination": "lira",
                 "description": "@blue in color",
-                "pickup": "kampala"}
+                "pickup": "kampala",
+                "weight": 3}
 parcel_data = {"parcel_name": "cooker",
                "destination": "lira",
                "description": " color is blue",
-               "pickup": "kampala"
+               "pickup": "kampala",
+               "weight": 3
                }
