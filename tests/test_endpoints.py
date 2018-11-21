@@ -1,6 +1,7 @@
+import os
 import json
-from Api import create_app
 import pytest
+from Api import create_app
 from Api.models.database import DBConnect
 from tests import test_base
 

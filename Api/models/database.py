@@ -9,12 +9,17 @@ config_name = os.getenv("APP_SETTINGS")
 
 class DBConnect:
     """class that establishes database connection, creates various tables and drops the tables """
+
     def __init__(self):
         self.app = create_app(config_name)
         self.db_url = self.app.config['DATABASE_URL']
         try:
-            print('establishing connection to' + self.db_url)
-            self.connection = psycopg2.connect(self.db_url)
+            print('establishing connection to ' + self.db_url)
+            self.connection = psycopg2.connect(database=self.db_url,
+                                               user="postgres",
+                                               host="localhost",
+                                               password="password",
+                                               port="5432")
             print('successfully connected')
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=RDC.RealDictCursor)

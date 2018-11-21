@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..api_v1 import api_v1
 from Api.models.parcel_orders import ParcelOrders
 from Api.helpers.utilities import check_empty_fields, string_validator, \
-    check_white_space_infield, validate_order_delivery_status, validate_order_delivery_status_by_admin, is_alpha
+    check_white_space_infield, validate_order_delivery_status, validate_order_delivery_status_by_admin
 from Api.helpers.admin_required import admin_required
 
 
