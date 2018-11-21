@@ -47,3 +47,4 @@ def validate_order_delivery_status(status):
 def validate_order_delivery_status_by_admin(status):
     if status != 'Transit' and status != 'Delivered':
         return True
+

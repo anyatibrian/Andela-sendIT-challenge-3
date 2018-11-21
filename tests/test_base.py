@@ -48,7 +48,8 @@ invalid_desc = {"parcel_name": "anyatibrian",
                 "destination": "lira",
                 "description": "@blue in color",
                 "pickup": "kampala",
-                "weight": 3}
+                "weight": 3
+                }
 parcel_data = {"parcel_name": "cooker",
                "destination": "lira",
                "description": " color is blue",

@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..api_v1 import api_v1
 from Api.models.parcel_orders import ParcelOrders
 from Api.helpers.utilities import check_empty_fields, string_validator, \
-    check_white_space_infield, validate_order_delivery_status, validate_order_delivery_status_by_admin
+    check_white_space_infield, validate_order_delivery_status, validate_order_delivery_status_by_admin, is_alpha
 from Api.helpers.admin_required import admin_required
 
 
@@ -22,7 +22,6 @@ def post_parcels():
     if check_white_space_infield(json_data['parcel_name'], json_data['destination'],
                                  json_data['description'], json_data['pickup']):
         return jsonify({'error': 'white space chars not allowed'}), 400
-
     # check ing invalid chars
     if string_validator(json_data['description']):
         return jsonify({'errors': 'your description field has invalid chars'}), 400

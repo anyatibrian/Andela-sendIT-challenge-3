@@ -34,15 +34,3 @@ class Users:
         self.conn.cursor.execute(sql)
         role = self.conn.cursor.fetchone()
         return role
-
-    def create_admin_user(self):
-        """function that create user of type admin"""
-        created_at = datetime.utcnow()
-        sql = "INSERT INTO users(username, email, password,create_at,admin)" \
-              " VALUES('anyatibrian','admin@gmail.com','password@admin','{}',TRUE )".format(created_at)
-        self.conn.cursor.execute(sql)
-
-
-if __name__ == '__main__':
-    user = Users()
-    user.create_admin_user()
