@@ -34,3 +34,11 @@ class Users:
         self.conn.cursor.execute(sql)
         role = self.conn.cursor.fetchone()
         return role
+
+    def create_default_admmin(self):
+        created_at = datetime.utcnow()
+        sql = "INSERT INTO users(username, password, email,create_at, admin) VALUES('anyatibrian'," \
+              " 'admin@123', 'anyatibrian@gmail.com','{}',True)" \
+              "".format(created_at)
+        self.conn.cursor.execute(sql)
+        print('defaut admin created successfully')
