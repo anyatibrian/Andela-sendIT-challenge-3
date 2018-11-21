@@ -1,10 +1,10 @@
-from ..api_v1 import api_v1
 from datetime import timedelta
 from flask import jsonify, request
 from flask_jwt_extended import create_access_token
 from ..models.users import Users
 from Api.helpers.utilities import check_empty_fields, validate_pwd_and_username, \
     check_validity_of_mail
+from ..api_v1 import api_v1
 
 
 @api_v1.route('auth/signup', methods=['POST'])
