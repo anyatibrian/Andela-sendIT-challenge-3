@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..api_v1 import api_v1
 from Api.models.parcel_orders import ParcelOrders
 from Api.helpers.utilities import check_empty_fields, string_validator, \
-    check_white_space_infield, validate_order_delivery_status,validate_order_delivery_status_by_admin
+    check_white_space_infield, validate_order_delivery_status, validate_order_delivery_status_by_admin
 from Api.helpers.admin_required import admin_required
 
 
@@ -109,3 +109,12 @@ def update_parcel_order_current_location(parcelId):
         return jsonify({'error': 'field must be a string'}), 400
     ParcelOrders().admin_update_parcel_delivery_present_location(json_data['current_location'], parcelId)
     return jsonify({'message': 'present location successfully updated'})
+
+
+@api_v1.route('/admin/parcels', methods=['GET'])
+@jwt_required
+def get_all_users_parcel_orders():
+    parcelOrders = ParcelOrders().admin_get_all_parcels_delivery_order()
+    if parcelOrders:
+        return jsonify({'parcel_orders': parcelOrders})
+    return jsonify({'error': 'parcel orders not found'}), 400

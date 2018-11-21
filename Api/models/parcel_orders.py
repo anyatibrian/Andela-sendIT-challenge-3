@@ -67,6 +67,7 @@ class ParcelOrders:
         self.conn.cursor.execute(sql)
 
     def admin_get_all_parcels_delivery_order(self):
+        """function that queries all the parcel orders """
         sql = "SELECT * FROM parcel_orders"
         self.conn.cursor.execute(sql)
         parcel_orders = self.conn.cursor.fetchall()
