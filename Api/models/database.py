@@ -8,6 +8,7 @@ config_name = os.getenv("APP_SETTINGS")
 
 
 class DBConnect:
+    """class that establishes database connection, creates various tables and drops the tables """
     def __init__(self):
         self.app = create_app(config_name)
         self.db_url = self.app.config['DATABASE_URL']
@@ -21,7 +22,7 @@ class DBConnect:
             print(error)
 
     def create_tables(self):
-        """function that tables in the database"""
+        """function  that creates tables in the database"""
         queries = (
             """CREATE TABLE IF NOT EXISTS users(
             user_id serial PRIMARY KEY NOT NULL ,

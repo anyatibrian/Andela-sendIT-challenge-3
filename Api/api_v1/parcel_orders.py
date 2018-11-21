@@ -28,7 +28,7 @@ def post_parcels():
         return jsonify({'errors': 'your description field has invalid chars'}), 400
 
     # checks order parcel exist
-    if orders.parcel_exist(parcel_name=json_data['parcel_name']):
+    if orders.check_parcel_exist(parcel_name=json_data['parcel_name']):
         return jsonify({'error': 'parcel order already exist'}), 400
 
     # creates parcels orders
