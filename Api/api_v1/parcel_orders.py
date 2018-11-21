@@ -113,6 +113,7 @@ def update_parcel_order_current_location(parcelId):
 
 @api_v1.route('/admin/parcels', methods=['GET'])
 @jwt_required
+@admin_required
 def get_all_users_parcel_orders():
     parcelOrders = ParcelOrders().admin_get_all_parcels_delivery_order()
     if parcelOrders:

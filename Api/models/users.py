@@ -10,9 +10,9 @@ class Users:
     def register_users(self, username, email, password):
         """function that registers users """
         created_at = datetime.utcnow()
-        query = "INSERT INTO users(username, email, password, create_at)" \
-                " VALUES('{}','{}','{}','{}')".format(username, email, password, created_at)
-        self.conn.cursor.execute(query)
+        sql = "INSERT INTO users(username, email, password, create_at)" \
+              " VALUES('{}','{}','{}','{}')".format(username, email, password, created_at)
+        self.conn.cursor.execute(sql)
 
     def check_username_exist(self, email):
         """function that checks validates"""
@@ -34,3 +34,15 @@ class Users:
         self.conn.cursor.execute(sql)
         role = self.conn.cursor.fetchone()
         return role
+
+    def create_admin_user(self):
+        """function that create user of type admin"""
+        created_at = datetime.utcnow()
+        sql = "INSERT INTO users(username, email, password,create_at,admin)" \
+              " VALUES('anyatibrian','admin@gmail.com','password@admin','{}',TRUE )".format(created_at)
+        self.conn.cursor.execute(sql)
+
+
+if __name__ == '__main__':
+    user = Users()
+    user.create_admin_user()
