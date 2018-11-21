@@ -1,15 +1,18 @@
 language: python
 python:
   - "3.6"
-services:
-  - postgresql
 install:
   - pip install pytest-cov
   - pip install coveralls
   - pip install -r requirements.txt
+services:
+  - postgresql
+env:
+  global:
+    - APP_SETTINGS=testing
 before_script:
-  - psql -c 'CREATE DATABASE travis_ci_test;' -U postgres
-#  - export TESTING_DATABASE=test_sendIT
+  - psql -c 'CREATE DATABASE test_sendIT;' -U postgres
+
 script:
   - py.test --cov-config .coveragerc --cov=Api
   - coverage report
