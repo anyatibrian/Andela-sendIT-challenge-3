@@ -209,20 +209,3 @@ def test_update_order_status_endpoint(client, register_user, login_user):
     response = client.put('api/v1/parcels/1', headers=dict(Authorization="Bearer " + access_token),
                           data=json.dumps({'status': 'cance'}))
     assert response.status_code == 400
-
-
-def test_admin_update_order_status_endpoint(client, register_user, login_user):
-    """function that test admin update order status endpoints"""
-    register_user
-    result = login_user
-
-    access_token = json.loads(result.data.decode())['access-token']
-    response = client.put('api/v1/parcels/1/status', headers=dict(Authorization="Bearer " + access_token),
-                          data=json.dumps({'status': 'Transit'}))
-    assert response.status_code == 201
-    assert b'status has been successfully updated' in response.data
-    access_token = json.loads(result.data.decode())['access-token']
-    response = client.put('api/v1/parcels/1/status', headers=dict(Authorization="Bearer " + access_token),
-                          data=json.dumps({'status': 'cance'}))
-    assert response.status_code == 400
-
