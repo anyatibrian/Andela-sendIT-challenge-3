@@ -1,0 +1,13 @@
+Signup
+--
+tags:
+  - user Authentication
+Paramaters:
+  - in: body
+    name: body
+    required: True
+    Type: json object
+    description: an endpoint that allows users to register
+responses:
+  201:
+    description: your account has been created successfully

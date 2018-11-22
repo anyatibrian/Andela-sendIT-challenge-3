@@ -146,17 +146,6 @@ def test_post_parcel_order_endpoints(client, register_user, login_user):
     assert b'parcel order created successfully' in response.data
 
 
-def test_parcel_order_already_exist(client, register_user, login_user):
-    register_user
-    result = login_user
-
-    access_token = json.loads(result.data.decode())['access-token']
-    response = client.post('api/v1/parcels', headers=dict(Authorization="Bearer " + access_token),
-                           data=json.dumps(test_base.parcel_data))
-    assert response.status_code == 400
-    assert b'parcel order already exist' in response.data
-
-
 def test_get_all_parcel_orders(client, register_user, login_user):
     """test get all parcel endpoints """
     register_user
