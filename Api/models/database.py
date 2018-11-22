@@ -9,11 +9,12 @@ class DBConnect:
         if os.getenv('APP_SETTINGS') == "testing":
             self.database_name = "test_db"
         elif os.getenv('APP_SETTINGS_HEROKU') == "HEROKU":
-            self.connection = psycopg2.connect(database="ec2-54-235-133-42.compute-1.amazonaws.com",
-                                               user="d7rr95auj3r48j",
-                                               host="hftvuynjxzorqh",
-                                               password="c0718fce8fb41dc0f9e82a2bda88b51fd8ca5511c6344dfbd2dbf3d88d0aa82d",
-                                               port="5432")
+            self.connection = psycopg2.connect(database="d999nce7urgeak",
+                                               user="iaohptvtbkmgka",
+                                               host="ec2-50-19-249-121.compute-1.amazonaws.com",
+                                               password="081e5bae79f44c095654fc3b6ee296fa0098b2ca6984d613012c59589254ca62",
+                                               port="5432"
+                                               )
         else:
             self.database_name = "sendIT"
         try:
