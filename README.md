@@ -1,3 +1,4 @@
+[![Coverage Status](https://coveralls.io/repos/github/anyatibrian/Andela-sendIT-challenge-3/badge.svg)](https://coveralls.io/github/anyatibrian/Andela-sendIT-challenge-3)
 # sendIT
 SendIT is a courier service that helps users deliver parcels to different destinations. SendIT
 provides courier quotes based on weight categories
@@ -25,15 +26,15 @@ provides courier quotes based on weight categories
 ## To view the API on Heroku 
 Copy this url paste it in a new tab
 ```
-- 
+- https://sendit-challenge-three.herokuapp.com/api/v1/parcels
 
 ```
 
 ## Installation
 First clone this repository
 ```
-$ https://github.com/anyatibrian/andela-sendIT-challenge-2.git
-$ cd andela-sendIT-challenge-2
+$ https://github.com/anyatibrian/Andela-sendIT-challenge-3.git
+$ cd andela-sendIT-challenge-3
 ```
 Create virtual environment and install it
 ```

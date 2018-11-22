@@ -63,9 +63,8 @@ class DBConnect:
             self.cursor.execute(tables)
         print("tables created successfully")
 
-    def drop_tables(self, *tables):
+    def drop_tables(self):
         """function that drops the tables"""
-        for table in tables:
-            query = "DROP TABLE IF EXISTS {} CASCADE".format(table)
-            self.cursor.execute(query)
+        query = "TRUNCATE TABLE users, parcel_orders RESTART IDENTITY "
+        self.cursor.execute(query)
         return print('tables dropped successfully')

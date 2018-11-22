@@ -1,4 +1,4 @@
 from flask import Blueprint
 
-api_v1 = Blueprint('api_v1', __name__)
+api_v1 = Blueprint('views', __name__)
 from . import parcel_orders, users
