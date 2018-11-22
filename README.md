@@ -1,4 +1,5 @@
-[![Coverage Status](https://coveralls.io/repos/github/anyatibrian/Andela-sendIT-challenge-3/badge.svg)](https://coveralls.io/github/anyatibrian/Andela-sendIT-challenge-3)
+[![Build Status](https://travis-ci.org/anyatibrian/Andela-sendIT-challenge-3.svg?branch=Develop)](https://travis-ci.org/anyatibrian/Andela-sendIT-challenge-3)
+
 # sendIT
 SendIT is a courier service that helps users deliver parcels to different destinations. SendIT
 provides courier quotes based on weight categories
