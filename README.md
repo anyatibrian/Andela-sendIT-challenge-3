@@ -25,15 +25,15 @@ provides courier quotes based on weight categories
 ## To view the API on Heroku 
 Copy this url paste it in a new tab
 ```
-- 
+- https://sendit-challenge-three.herokuapp.com/api/v1/parcels
 
 ```
 
 ## Installation
 First clone this repository
 ```
-$ https://github.com/anyatibrian/andela-sendIT-challenge-2.git
-$ cd andela-sendIT-challenge-2
+$ https://github.com/anyatibrian/Andela-sendIT-challenge-3.git
+$ cd andela-sendIT-challenge-3
 ```
 Create virtual environment and install it
 ```
