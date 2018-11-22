@@ -48,3 +48,7 @@ def validate_order_delivery_status_by_admin(status):
     if status != 'Transit' and status != 'Delivered':
         return True
 
+
+def validate_alphabets(*args):
+    for field in args:
+        return re.match("^[A-Za-z]*$", field)

@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from ..api_v1 import api_v1
+from ..views import api_v1
 from Api.models.parcel_orders import ParcelOrders
 from Api.helpers.utilities import check_empty_fields, string_validator, \
     check_white_space_infield, validate_order_delivery_status, validate_order_delivery_status_by_admin
@@ -92,6 +92,7 @@ def update_parcel_status(parcelId):
 
 
 @api_v1.route('/parcels/<int:parcelId>/status', methods=['PUT'])
+@admin_required
 @jwt_required
 def update_parcel_order_status(parcelId):
     json_data = request.get_json(force=True)
