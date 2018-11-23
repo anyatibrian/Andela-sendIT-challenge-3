@@ -272,3 +272,17 @@ def test_update_present_location(client, register_admin, login_admin):
     response = client.put('api/v1/parcels/1/presentLocation', headers=dict(Authorization="Bearer " + access_token),
                           data=json.dumps({'current_location': 'lira'}))
     assert response.status_code == 201
+
+
+def test_admin_update_status(client, register_admin, login_admin):
+    register_admin
+    result = login_admin
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.put('api/v1/parcels/1/status', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'status': 'canceled'}))
+    assert response.status_code == 400
+
+    response = client.put('api/v1/parcels/1/status', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'status': 'Transit'}))
+    assert response.status_code == 201
