@@ -3,7 +3,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..views import api_v1
 from Api.models.parcel_orders import ParcelOrders
 from Api.helpers.utilities import check_empty_fields, string_validator, \
-    check_white_space_infield, validate_order_delivery_status, validate_order_delivery_status_by_admin
+    check_white_space_infield, validate_order_delivery_status, \
+    validate_order_delivery_status_by_admin, validate_alphabets
 from Api.helpers.admin_required import admin_required
 
 
@@ -12,27 +13,33 @@ from Api.helpers.admin_required import admin_required
 def post_parcels():
     current_user = get_jwt_identity()
     json_data = request.get_json(force=True)
+    try:
+        name = json_data['receivers_name']
+        destination = json_data['destination']
+        description = json_data['description']
+        pickup = json_data['pickup']
+        weight = json_data['weight']
+        user_id = current_user['user_id']
+    except:
+        return jsonify({'error': 'key and value error'}), 400
+
     orders = ParcelOrders()
     # checks for empty parcel  fields
-    if check_empty_fields(json_data['parcel_name'], json_data['destination'],
-                          json_data['description'], json_data['pickup']):
+    if check_empty_fields(name, destination, description, pickup):
         return jsonify({'errors': 'fields must not be empty'}), 400
 
     # checks for white space chars
-    if check_white_space_infield(json_data['parcel_name'], json_data['destination'],
-                                 json_data['description'], json_data['pickup']):
+    if check_white_space_infield(name, description, destination, pickup):
         return jsonify({'error': 'white space chars not allowed'}), 400
+
     # check ing invalid chars
-    if string_validator(json_data['description']):
+    if string_validator(description):
         return jsonify({'errors': 'your description field has invalid chars'}), 400
 
+    if not isinstance(json_data['weight'], int) or json_data['weight'] < 1:
+        return jsonify({'errors': 'weight error'}), 400
     # creates parcels orders
-    orders.create_parcel_order(name=json_data['parcel_name'].strip(),
-                               destination=json_data['destination'].strip(),
-                               description=json_data['description'].strip(),
-                               pickup=json_data['pickup'].strip(),
-                               weight=json_data['weight'],
-                               user_id=current_user['user_id'])
+    orders.create_parcel_order(name, destination, description, pickup, weight, user_id)
     return jsonify({'message': "parcel order created successfully"}), 201
 
 
@@ -64,14 +71,16 @@ def get_single_parcel_order(parcel_id):
 def update_parcel_destination(parcel_id):
     current_user = get_jwt_identity()
     json_data = request.get_json(force=True)
-
-    destination = json_data['destination']
-    if isinstance(destination, str):
-        parcels = ParcelOrders().update_parcel_destination(user_id=current_user['user_id'],
-                                                           destination=destination,
-                                                           parcel_id=parcel_id)
-        return jsonify({'message': 'parcel destination updated successfully'}), 201
-    return jsonify({'error': 'destination should be strings only'}), 400
+    try:
+        destination = json_data['destination']
+        if isinstance(destination, str) and validate_alphabets(destination):
+            parcels = ParcelOrders().update_parcel_destination(user_id=current_user['user_id'],
+                                                               destination=destination,
+                                                               parcel_id=parcel_id)
+            return jsonify({'message': 'parcel destination updated successfully'}), 201
+        return jsonify({'error': 'destination should be strings only'}), 400
+    except:
+        return jsonify({'error': 'key and value error'}), 400
 
 
 @api_v1.route('/parcels/<int:parcelId>', methods=['PUT'])
@@ -79,12 +88,14 @@ def update_parcel_destination(parcel_id):
 def update_parcel_status(parcelId):
     current_user = get_jwt_identity()
     json_data = request.get_json(force=True)
-
-    # validates status
-    if validate_order_delivery_status(json_data['status']):
-        return jsonify({'error': 'your status should be only canceled and pending'}), 400
-    ParcelOrders().update_parcel_delivery_status(current_user['user_id'], json_data['status'], parcelId)
-    return jsonify({'message': 'status has been successfully updated'}), 201
+    try:
+        # validates status
+        if validate_order_delivery_status(json_data['status']):
+            return jsonify({'error': 'your status should be only canceled and pending'}), 400
+        ParcelOrders().update_parcel_delivery_status(current_user['user_id'], json_data['status'], parcelId)
+        return jsonify({'message': 'status has been successfully updated'}), 201
+    except:
+        return jsonify({'error': 'key and value error'}), 400
 
 
 @api_v1.route('/parcels/<int:parcelId>/status', methods=['PUT'])
@@ -92,20 +103,27 @@ def update_parcel_status(parcelId):
 @jwt_required
 def update_parcel_order_status(parcelId):
     json_data = request.get_json(force=True)
-    if validate_order_delivery_status_by_admin(json_data['status']):
-        return jsonify({'error': 'parcel status should be Transit and Delivered'}), 400
-    ParcelOrders().admin_update_parcel_delivery_status(json_data['status'], parcelId)
-    return jsonify({'message': 'status has been successfully updated'}), 201
+    try:
+        if validate_order_delivery_status_by_admin(json_data['status']):
+            return jsonify({'error': 'parcel status should be Transit and Delivered'}), 400
+        ParcelOrders().admin_update_parcel_delivery_status(json_data['status'], parcelId)
+        return jsonify({'message': 'status has been successfully updated'}), 201
+    except:
+        return jsonify({'error': 'key and value error'}), 400
 
 
 @api_v1.route('/parcels/<int:parcelId>/presentLocation', methods=['PUT'])
+@jwt_required
 @admin_required
 def update_parcel_order_current_location(parcelId):
-    json_data = request.get_json(force=True)
-    if not json_data['current_location'].isalpha():
-        return jsonify({'error': 'field must be a string'}), 400
-    ParcelOrders().admin_update_parcel_delivery_present_location(json_data['current_location'], parcelId)
-    return jsonify({'message': 'present location successfully updated'})
+    try:
+        json_data = request.get_json(force=True)
+        if validate_alphabets(json_data['current_location']):
+            return jsonify({'error': 'field must be a string'}), 400
+        ParcelOrders().admin_update_parcel_delivery_present_location(json_data['current_location'], parcelId)
+        return jsonify({'message': 'present location successfully updated'})
+    except:
+        return jsonify({'error': 'key and value error'}), 400
 
 
 @api_v1.route('/admin/parcels', methods=['GET'])

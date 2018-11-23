@@ -1,4 +1,6 @@
 import re
+import string
+import random
 
 
 def check_empty_fields(*args):
@@ -52,3 +54,8 @@ def validate_order_delivery_status_by_admin(status):
 def validate_alphabets(*args):
     for field in args:
         return re.match("^[A-Za-z]*$", field)
+
+
+def serial_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    # function that generates a random serial number
+    return ''.join(random.choice(chars) for _ in range(size))

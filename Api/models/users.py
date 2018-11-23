@@ -39,7 +39,7 @@ class Users:
         created_at = datetime.utcnow()
         sql = "SELECT * FROM users WHERE username='admin'"
         self.conn.cursor.execute(sql)
-        result = self.conn.cursor.fetchone()
+        result = self.conn.cursor
         if not result:
             sql = "INSERT INTO users(username, password, email,create_at, admin) VALUES('admin'," \
                   " 'admin@123', 'anyatibrian@gmail.com','{}',True)" \

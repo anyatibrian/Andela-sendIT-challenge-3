@@ -43,6 +43,15 @@ def login_user(client, username='anyatibrian', password='password@123'):
     return client.post('api/v1/auth/login', data=json.dumps(data))
 
 
+@pytest.fixture(scope='module')
+def login_admin(client, username='admin', password='admin@123'):
+    data = {
+        'username': username,
+        'password': password,
+    }
+    return client.post('api/v1/auth/login', data=json.dumps(data))
+
+
 def test_user_signup_has_empty_field(client):
     """test that checks for empty field in user input"""
     response = client.post('api/v1/auth/signup', data=json.dumps(test_base.empty_users))
@@ -75,6 +84,19 @@ def test_user_already_exist_(client):
     response = client.post('api/v1/auth/signup', data=json.dumps(test_base.valid_user))
     assert response.status_code == 400
     assert json.loads(response.data)['message'] == 'anyatibrian@gmail.com already taken'
+
+
+def test_signup_key_errors(client):
+    response = client.post('api/v1/auth/signup', data=json.dumps(test_base.key_value_error))
+    assert response.status_code == 400
+    assert json.loads(response.data)['error'] == 'value and key errors'
+
+
+def test_user_login(client):
+    """test user login"""
+    response = client.post('api/v1/auth/login', data=json.dumps(test_base.value_error))
+    assert response.status_code == 400
+    assert json.loads(response.data)['errors'] == 'key and value error'
 
 
 def test_user_login(client):
@@ -207,4 +229,3 @@ def test_not_admin(client, register_user, login_user):
     access_token = json.loads(result.data.decode())['access-token']
     response = client.get('api/v1/admin/parcels', headers=dict(Authorization="Bearer " + access_token))
     assert b'You cant perform this action because you are unauthorised' in response.data
-

@@ -4,6 +4,12 @@ empty_users = {
     "password": "password@123"
 }
 
+key_value_error = {
+    " ": "anyatibrian",
+    "email": "",
+    "password": "password@123"
+}
+
 invalide_user = {
     "username": "anya",
     "email": "anyatibrian@gmail.com",
@@ -33,26 +39,32 @@ invalid_login = {
     "password": "password@123"
 }
 
-empty_field = {"parcel_name": "anyatibrian",
+empty_field = {"receivers_name": "anyatibrian",
                "destination": "lira",
                "description": "",
                "pickup": "kampala",
                "weight": 3}
-white_space = {"parcel_name": "anyatibrian",
+white_space = {"receivers_name": "anyatibrian",
                "destination": " ",
                "description": " ",
                "pickup": "kampala",
                "weight": 3
                }
-invalid_desc = {"parcel_name": "anyatibrian",
+invalid_desc = {"receivers_name": "anyatibrian",
                 "destination": "lira",
                 "description": "@blue in color",
                 "pickup": "kampala",
                 "weight": 3
                 }
-parcel_data = {"parcel_name": "cooker",
+
+parcel_data = {"receivers_name": "cooker",
                "destination": "lira",
                "description": " color is blue",
                "pickup": "kampala",
                "weight": 3
                }
+
+value_error = {
+    " ": "anyatibrian",
+    "password": "password@123"
+}
