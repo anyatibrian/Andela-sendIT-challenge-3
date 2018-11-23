@@ -12,7 +12,7 @@ def admin_required(f):
         user = Users().find_user(current_user['user_id'])
         admin = user['admin']
         if not admin:
-            return jsonify({'message': 'You cant perform this action because you are unauthorised'}), 401
+            return jsonify({'message': 'You cant perform this action because you are unauthorised'}), 403
         return f(*args, **kwargs)
 
     return wrapper
