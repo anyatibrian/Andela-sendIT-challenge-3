@@ -1,5 +1,6 @@
 from Api.models.users import DBConnect
 from datetime import datetime
+from Api.helpers.utilities import serial_generator
 
 
 class ParcelOrders:
@@ -12,22 +13,16 @@ class ParcelOrders:
         """function that creates products"""
         created_at = datetime.utcnow()
         status = 'pending'
+        serial = serial_generator(8)
         current_location = pickup
         delivery_price = str(2000 * weight)+"ugx"
-        sql = "INSERT INTO parcel_orders(name, destination, description," \
-              " pickup, status, current_location, delivery_price, weight, created_at" \
-              ", user_id) VALUES('{}','{}', '{}','{}','{}','{}','{}','{}','{}','{}'" \
+        sql = "INSERT INTO parcel_orders(receivers, destination, description," \
+              " pickup, status, current_location, delivery_price,Serial_No, weight, created_at" \
+              ", user_id) VALUES('{}','{}', '{}','{}','{}','{}','{}','{}','{}','{}','{}'" \
               ")".format(name, destination, description, pickup, status,
-                         current_location, delivery_price, weight, created_at, user_id)
+                         current_location, delivery_price, serial, weight, created_at, user_id)
         self.conn.cursor.execute(sql)
         return 'order created successfully created'
-
-    def check_parcel_exist(self, parcel_name):
-        """function that checks the parcel order exists"""
-        sql = "SELECT * FROM parcel_orders WHERE name='{}'".format(parcel_name)
-        self.conn.cursor.execute(sql)
-        parcels = self.conn.cursor.fetchone()
-        return parcels
 
     def get_users_parcel_orders(self, user_id):
         """function that fetches all parcel orders by a specific user"""

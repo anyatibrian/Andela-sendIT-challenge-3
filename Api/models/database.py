@@ -44,13 +44,14 @@ class DBConnect:
             """
             CREATE TABLE IF NOT EXISTS parcel_orders(
             parcel_id serial PRIMARY KEY NOT NULL,
-            name VARCHAR(100) NOT NULL,
+            receivers VARCHAR(100) NOT NULL,
             description VARCHAR(100) NOT NULL,
             destination VARCHAR(100) NOT NULL,
             pickup VARCHAR(200) NOT NULL,
             status VARCHAR(100) DEFAULT'pending',
             current_location VARCHAR(100) NOT NULL,
             delivery_price VARCHAR(100)NOT NULL,
+            Serial_No VARCHAR(100) NOT NULL,
             weight INT NOT NULL,
             created_at VARCHAR(100) NOT NULL,
             user_id INT NOT NULL,

@@ -37,8 +37,8 @@ class Users:
 
     def create_default_admmin(self):
         created_at = datetime.utcnow()
-        sql = "INSERT INTO users(username, password, email,create_at, admin) VALUES('anyatibrian'," \
+        sql = "INSERT INTO users(username, password, email,create_at, admin) VALUES('admin'," \
               " 'admin@123', 'anyatibrian@gmail.com','{}',True)" \
               "".format(created_at)
         self.conn.cursor.execute(sql)
-        print('defaut admin created successfully')
+        print('default admin created successfully')
