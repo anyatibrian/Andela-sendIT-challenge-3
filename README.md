@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/anyatibrian/Andela-sendIT-challenge-3/badge.svg?branch=Develop)](https://coveralls.io/github/anyatibrian/Andela-sendIT-challenge-3?branch=Develop)
+[![Coverage Status](https://coveralls.io/repos/github/anyatibrian/Andela-sendIT-challenge-3/badge.svg?branch=ft-get-all-users-orders-162116090)](https://coveralls.io/github/anyatibrian/Andela-sendIT-challenge-3?branch=ft-get-all-users-orders-162116090)
 [![Build Status](https://travis-ci.org/anyatibrian/Andela-sendIT-challenge-3.svg?branch=Develop)](https://travis-ci.org/anyatibrian/Andela-sendIT-challenge-3)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ded3475e22d32eff22c3/maintainability)](https://codeclimate.com/github/anyatibrian/Andela-sendIT-challenge-3/maintainability)
 
