@@ -3,6 +3,7 @@ import pytest
 from Api import create_app
 from Api.models.database import DBConnect
 from tests import test_base
+from Api.models.users import Users
 
 
 # creating our test client
@@ -41,6 +42,21 @@ def login_user(client, username='anyatibrian', password='password@123'):
         'password': password,
     }
     return client.post('api/v1/auth/login', data=json.dumps(data))
+
+
+@pytest.fixture(scope='module')
+def login_admin(client, username='admin', password='admin@123'):
+    data = {
+        'username': username,
+        'password': password,
+    }
+    return client.post('api/v1/auth/login', data=json.dumps(data))
+
+
+@pytest.fixture(scope='module')
+def register_admin():
+    admin = Users().create_default_admmin()
+    return admin
 
 
 @pytest.fixture(scope='module')
@@ -114,6 +130,10 @@ def test_user_login(client):
     response = client.post('api/v1/auth/login', data=json.dumps(test_base.invalid_login))
     assert response.status_code == 401
     assert json.loads(response.data)['message'] == 'username and password does not exist'
+
+    response = client.post('api/v1/auth/login', data=json.dumps(test_base.bad_user_fields_login))
+    assert response.status_code == 400
+    assert json.loads(response.data)['error'] == 'value and key errors'
 
 
 def test_post_invalid_parcel_endpoints(client, register_user, login_user):
@@ -229,3 +249,26 @@ def test_not_admin(client, register_user, login_user):
     access_token = json.loads(result.data.decode())['access-token']
     response = client.get('api/v1/admin/parcels', headers=dict(Authorization="Bearer " + access_token))
     assert b'You cant perform this action because you are unauthorised' in response.data
+
+
+def test_get_all_admin_parcels(client, register_admin, login_admin):
+    register_admin
+    result = login_admin
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.get('api/v1/admin/parcels', headers=dict(Authorization="Bearer " + access_token))
+    assert response.status_code == 200
+
+
+def test_update_present_location(client, register_admin, login_admin):
+    register_admin
+    result = login_admin
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.put('api/v1/parcels/1/presentLocation', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'current_location': '00000'}))
+    assert response.status_code == 400
+
+    response = client.put('api/v1/parcels/1/presentLocation', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'current_location': 'lira'}))
+    assert response.status_code == 201

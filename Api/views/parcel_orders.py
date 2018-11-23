@@ -118,10 +118,10 @@ def update_parcel_order_status(parcelId):
 def update_parcel_order_current_location(parcelId):
     try:
         json_data = request.get_json(force=True)
-        if validate_alphabets(json_data['current_location']):
+        if not validate_alphabets(json_data['current_location']):
             return jsonify({'error': 'field must be a string'}), 400
         ParcelOrders().admin_update_parcel_delivery_present_location(json_data['current_location'], parcelId)
-        return jsonify({'message': 'present location successfully updated'})
+        return jsonify({'message': 'present location successfully updated'}), 201
     except:
         return jsonify({'error': 'key and value error'}), 400
 
@@ -132,5 +132,5 @@ def update_parcel_order_current_location(parcelId):
 def get_all_users_parcel_orders():
     parcelOrders = ParcelOrders().admin_get_all_parcels_delivery_order()
     if parcelOrders:
-        return jsonify({'parcel_orders': parcelOrders})
+        return jsonify({'parcel_orders': parcelOrders}), 200
     return jsonify({'error': 'parcel orders not found'}), 400

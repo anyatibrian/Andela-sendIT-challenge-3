@@ -34,6 +34,10 @@ valid_login = {
     "username": "anyabrian",
     "password": "password@123"
 }
+bad_user_fields_login = {
+    " ": "anyabrian",
+    "password": "password@123"
+}
 invalid_login = {
     "username": "anyabrian@140",
     "password": "password@123"
