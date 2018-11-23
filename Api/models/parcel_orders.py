@@ -32,7 +32,7 @@ class ParcelOrders:
         return parcels
 
     def get_single_parcel_orders(self, user_id, parcel_id):
-        """ function that fetches a single products"""
+        """ function that fetches a single parcel orders"""
         sql = "SELECT * FROM parcel_orders WHERE user_id ={}".format(user_id) + "and parcel_id ='{}'".format(parcel_id)
         self.conn.cursor.execute(sql)
         parcel_order = self.conn.cursor.fetchone()

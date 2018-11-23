@@ -51,7 +51,7 @@ def get_parcel_orders():
     orders = ParcelOrders()
     parcels = orders.get_users_parcel_orders(current_user['user_id'])
     if parcels:
-        return jsonify({'parcel_orders': parcels}), 200
+        return jsonify({'parcel_orders': current_user['user_id']}), 200
     return jsonify({'error': 'your order is empty'}), 404
 
 
