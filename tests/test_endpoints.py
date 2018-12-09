@@ -102,10 +102,10 @@ def test_user_already_exist_(client):
     assert json.loads(response.data)['message'] == 'email already taken'
 
 
-def test_signup_key_errors(client):
-    response = client.post('api/v1/auth/signup', data=json.dumps(test_base.key_value_error))
-    assert response.status_code == 400
-    assert json.loads(response.data)['error'] == 'value and key errors'
+# def test_signup_key_errors(client):
+# response = client.post('api/v1/auth/signup', data=json.dumps(test_base.key_value_error))
+# assert response.status_code == 400
+# assert json.loads(response.data)['error'] == 'value and key errors'
 
 
 def test_user_login(client):
