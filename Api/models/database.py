@@ -8,22 +8,12 @@ class DBConnect:
     def __init__(self):
         if os.getenv('APP_SETTINGS') == "testing":
             self.database_name = "test_db"
-        elif os.getenv('APP_SETTINGS_HEROKU') == "HEROKU":
-            self.connection = psycopg2.connect(database="d999nce7urgeak",
-                                               user="iaohptvtbkmgka",
-                                               host="ec2-50-19-249-121.compute-1.amazonaws.com",
-                                               password="081e5bae79f44c095654fc3b6ee296fa0098b2ca6984d613012c59589254ca62",
-                                               port="5432"
-                                               )
         else:
             self.database_name = "sendIT"
         try:
+            DATABASE_URL = 'postgresql://postgres:password@127.0.0.1:5432/{}'.format(self.database_name)
             print('establishing connection to ' + self.database_name)
-            self.connection = psycopg2.connect(database="{}".format(self.database_name),
-                                               user="postgres",
-                                               host="localhost",
-                                               password="password",
-                                               port="5432")
+            self.connection = psycopg2.connect(DATABASE_URL)
             print('successfully connected')
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=RDC.RealDictCursor)
