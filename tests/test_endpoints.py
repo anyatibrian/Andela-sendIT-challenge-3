@@ -99,7 +99,7 @@ def test_user_already_exist_(client):
     """test that checks whether the user has already been created"""
     response = client.post('api/v1/auth/signup', data=json.dumps(test_base.valid_user))
     assert response.status_code == 400
-    assert json.loads(response.data)['message'] == 'anyatibrian@gmail.com already taken'
+    assert json.loads(response.data)['message'] == 'email already taken'
 
 
 def test_signup_key_errors(client):
