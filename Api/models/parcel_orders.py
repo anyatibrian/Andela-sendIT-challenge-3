@@ -15,7 +15,7 @@ class ParcelOrders:
         status = 'pending'
         serial = serial_generator(8)
         current_location = pickup
-        delivery_price = str(2000 * weight)+"ugx"
+        delivery_price = str(2000 * weight) + "ugx"
         sql = "INSERT INTO parcel_orders(receivers, destination, description," \
               " pickup, status, current_location, delivery_price,Serial_No, weight, created_at" \
               ", user_id) VALUES('{}','{}', '{}','{}','{}','{}','{}','{}','{}','{}','{}'" \
@@ -67,3 +67,10 @@ class ParcelOrders:
         self.conn.cursor.execute(sql)
         parcel_orders = self.conn.cursor.fetchall()
         return parcel_orders
+
+    def user_profile(self, user_id, count):
+        """selecting counts made for each user parcels"""
+        sql = "SELECT COUNT(*) from parcel_orders WHERE user_id='{}'".format(user_id) + "and status='{}'".format(count)
+        self.conn.cursor.execute(sql)
+        row_count = self.conn.cursor.fetchall()
+        return row_count[0]

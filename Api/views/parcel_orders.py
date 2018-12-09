@@ -29,7 +29,8 @@ def post_parcels():
         return jsonify({'errors': 'fields must not be empty'}), 400
 
     # checks for white space chars
-    if check_white_space_infield(name, description, destination, pickup):
+    if check_white_space_infield(json_data['receivers_name'], json_data['description'],
+                                 json_data['destination'], json_data['pickup']):
         return jsonify({'error': 'white space chars not allowed'}), 400
 
     # check ing invalid chars
@@ -51,7 +52,7 @@ def get_parcel_orders():
     orders = ParcelOrders()
     parcels = orders.get_users_parcel_orders(current_user['user_id'])
     if parcels:
-        return jsonify({'parcel_orders': current_user['user_id']}), 200
+        return jsonify({'parcel_orders': parcels}), 200
     return jsonify({'error': 'your order is empty'}), 404
 
 
@@ -96,6 +97,26 @@ def update_parcel_status(parcelId):
         return jsonify({'message': 'status has been successfully updated'}), 201
     except:
         return jsonify({'error': 'key and value error'}), 400
+
+
+@api_v1.route('/auth/profiles', methods=['GET'])
+@jwt_required
+def get_user_profile():
+    current_user = get_jwt_identity()
+    user_profile = ParcelOrders()
+    pending = user_profile.user_profile(current_user['user_id'], 'pending')
+    canceled = user_profile.user_profile(current_user['user_id'], 'canceled')
+    delivered = user_profile.user_profile(current_user['user_id'], 'Delivered')
+    transit = user_profile.user_profile(current_user['user_id'], 'Transit')
+    total = pending['count'] + canceled['count'] + delivered['count'] + transit['count']
+    userinfo = {
+        'pending': pending,
+        'canceled': canceled,
+        'delivered': delivered,
+        'Transit': transit,
+        'total': total
+    }
+    return jsonify(userinfo), 200
 
 
 @api_v1.route('/parcels/<int:parcelId>/status', methods=['PUT'])

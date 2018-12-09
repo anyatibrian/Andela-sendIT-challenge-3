@@ -28,7 +28,7 @@ def register_user():
         # checks where the user has been created already
         user_exist = users.check_username_exist(email=json_data['email'])
         if user_exist:
-            return jsonify({'message': user_exist['email'] + ' already taken'}), 400
+            return jsonify({'message':'email already taken'}), 400
 
         # handles user registrations
         users.register_users(username=json_data['username'],
