@@ -74,3 +74,10 @@ class ParcelOrders:
         self.conn.cursor.execute(sql)
         row_count = self.conn.cursor.fetchall()
         return row_count[0]
+
+    def check_canceled_parcels(self, status, id):
+        """this function checks where the parcel has been canceled so that the admin cannot update the status"""
+        sql = " SELECT * FROM parcel_orders WHERE Status='{}'".format(status)+"and parcel_id='{}'".format(id)
+        self.conn.cursor.execute(sql)
+        row = self.conn.cursor.fetchone()
+        return row
