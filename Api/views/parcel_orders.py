@@ -127,6 +127,15 @@ def update_parcel_order_status(parcelId):
     try:
         if validate_order_delivery_status_by_admin(json_data['status']):
             return jsonify({'error': 'parcel status should be Transit and Delivered'}), 400
+
+        # check whether the parcel has already been canceledS
+        if ParcelOrders().check_canceled_parcels('canceled', parcelId):
+            return jsonify({'error': 'sorry this parcel has already been canceled'}), 400
+
+            # check whether the parcel has already been canceledS
+        if ParcelOrders().check_canceled_parcels('Delivered', parcelId):
+            return jsonify({'error': 'sorry this parcel has already been Delivered'}), 400
+
         ParcelOrders().admin_update_parcel_delivery_status(json_data['status'], parcelId)
         return jsonify({'message': 'status has been successfully updated'}), 201
     except:
@@ -141,6 +150,15 @@ def update_parcel_order_current_location(parcelId):
         json_data = request.get_json(force=True)
         if not validate_alphabets(json_data['current_location']):
             return jsonify({'error': 'field must be a string'}), 400
+
+        # check whether the parcel has already been delivered
+        if ParcelOrders().check_canceled_parcels('Delivered', parcelId):
+            return jsonify({'error': 'sorry this parcel has already been delivered'}), 400
+
+        # check whether the parcel has already been canceledS
+        if ParcelOrders().check_canceled_parcels('canceled', parcelId):
+            return jsonify({'error': 'sorry this parcel has already been canceled'}), 400
+
         ParcelOrders().admin_update_parcel_delivery_present_location(json_data['current_location'], parcelId)
         return jsonify({'message': 'present location successfully updated'}), 201
     except:
