@@ -75,9 +75,16 @@ def update_parcel_destination(parcel_id):
     try:
         destination = json_data['destination']
         if isinstance(destination, str) and validate_alphabets(destination):
-            parcels = ParcelOrders().update_parcel_destination(user_id=current_user['user_id'],
-                                                               destination=destination,
-                                                               parcel_id=parcel_id)
+            # check whether the parcel has already been canceledS
+            if ParcelOrders().check_canceled_parcels('canceled', parcel_id):
+                return jsonify({'error': 'sorry this parcel has already been canceled'}), 400
+
+            # check whether the parcel has already been canceledS
+            if ParcelOrders().check_canceled_parcels('Delivered', parcel_id):
+                return jsonify({'error': 'sorry this parcel has already been Delivered'}), 400
+            ParcelOrders().update_parcel_destination(user_id=current_user['user_id'],
+                                                     destination=destination,
+                                                     parcel_id=parcel_id)
             return jsonify({'message': 'parcel destination updated successfully'}), 201
         return jsonify({'error': 'destination should be strings only'}), 400
     except:
