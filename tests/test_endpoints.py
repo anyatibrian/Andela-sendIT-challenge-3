@@ -267,10 +267,18 @@ def test_update_present_location(client, register_admin, login_admin):
     response = client.put('api/v1/parcels/1/presentLocation', headers=dict(Authorization="Bearer " + access_token),
                           data=json.dumps({'current_location': '00000'}))
     assert response.status_code == 400
+    # test for the canceled parcel
+    response = client.put('api/v1/parcels/1/presentLocation', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'current_location': 'lira'}))
+    assert response.status_code == 400
 
     response = client.put('api/v1/parcels/1/presentLocation', headers=dict(Authorization="Bearer " + access_token),
                           data=json.dumps({'current_location': 'lira'}))
-    assert response.status_code == 201
+    assert response.status_code == 400
+
+    response = client.put('api/v1/parcels/1/presentLocation', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'current': ''}))
+    assert b'key and value error' in response.data
 
 
 def test_admin_update_status(client, register_admin, login_admin):
@@ -281,7 +289,22 @@ def test_admin_update_status(client, register_admin, login_admin):
     response = client.put('api/v1/parcels/1/status', headers=dict(Authorization="Bearer " + access_token),
                           data=json.dumps({'status': 'canceled'}))
     assert response.status_code == 400
-
+    # test to check whether the parcel has been canceled
     response = client.put('api/v1/parcels/1/status', headers=dict(Authorization="Bearer " + access_token),
                           data=json.dumps({'status': 'Transit'}))
-    assert response.status_code == 201
+    assert b'sorry this parcel has already been canceled' in response.data
+    # test to check whether the parcel has been canceled
+    response = client.put('api/v1/parcels/1/status', headers=dict(Authorization="Bearer " + access_token),
+                          data=json.dumps({'': 'Transit'}))
+    assert response.status_code == 400
+
+
+# function that test users profile
+def test_user_profile(client, register_user, login_user):
+    register_user
+    result = login_user
+
+    access_token = json.loads(result.data.decode())['access-token']
+    response = client.get('api/v1/auth/profiles', headers=dict(Authorization="Bearer " + access_token))
+    assert response.status_code == 200
+

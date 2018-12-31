@@ -26,7 +26,7 @@ class ParcelOrders:
 
     def get_users_parcel_orders(self, user_id):
         """function that fetches all parcel orders by a specific user"""
-        sql = "SELECT * FROM parcel_orders WHERE user_id='{}'".format(user_id)
+        sql = "SELECT * FROM parcel_orders WHERE user_id='{}'".format(user_id)+"ORDER BY created_at DESC"
         self.conn.cursor.execute(sql)
         parcels = self.conn.cursor.fetchall()
         return parcels
@@ -63,7 +63,7 @@ class ParcelOrders:
 
     def admin_get_all_parcels_delivery_order(self):
         """function that queries all the parcel orders """
-        sql = "SELECT * FROM parcel_orders"
+        sql = "SELECT * FROM parcel_orders ORDER BY created_at"
         self.conn.cursor.execute(sql)
         parcel_orders = self.conn.cursor.fetchall()
         return parcel_orders

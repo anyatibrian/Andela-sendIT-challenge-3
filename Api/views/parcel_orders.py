@@ -79,7 +79,7 @@ def update_parcel_destination(parcel_id):
             if ParcelOrders().check_canceled_parcels('canceled', parcel_id):
                 return jsonify({'error': 'sorry this parcel has already been canceled'}), 400
 
-            # check whether the parcel has already been canceledS
+            # check whether the parcel has already been Delivered
             if ParcelOrders().check_canceled_parcels('Delivered', parcel_id):
                 return jsonify({'error': 'sorry this parcel has already been Delivered'}), 400
             ParcelOrders().update_parcel_destination(user_id=current_user['user_id'],
