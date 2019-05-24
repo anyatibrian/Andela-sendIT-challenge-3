@@ -6,10 +6,7 @@ import os
 class DBConnect:
     """class that establishes database connection, creates various tables and drops the tables """
     def __init__(self):
-        if os.getenv('APP_SETTINGS') == "testing":
-            DATABASE_URL = 'postgresql://postgres:password@127.0.0.1:5432/test_db'
-        else:
-            DATABASE_URL = 'postgres://iaohptvtbkmgka:081e5bae79f44c095654fc3b6ee296fa0098b2ca6984d613012c59589254ca 62@ec2-50-19-249-121.compute-1.amazonaws.com:5432/d999nce7urgeak'
+        DATABASE_URL = 'postgres://iaohptvtbkmgka:081e5bae79f44c095654fc3b6ee296fa0098b2ca6984d613012c59589254ca62@ec2-50-19-249-121.compute-1.amazonaws.com:5432/d999nce7urgeak'
             #DATABASE_URL = 'postgresql://postgres:password@127.0.0.1:5432/sendIT'
         try:
             print('establishing connection made successfully')
